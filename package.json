@@ -1,5 +1,5 @@
 {
-  "name": "jsgram-route",
+  "name": "gram-route",
   "version": "0.1.0",
   "description": "A fast http router for node js. Matches static routes with hashmap lookup and wildcard routes with assemble regex",
   "author": "Jörn Heinemann <joernheinemann@gmx.de>",
@@ -14,7 +14,7 @@
     "route",
     "fast",
     "fast route",
-    "jsgram"
+    "gram"
   ],
   "dependencies": {
     "path-to-regexp": "^6.1.0"
