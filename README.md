@@ -1,4 +1,4 @@
-# jsgram-route
+# gram-route
 
 A fast http router for node js. Matches static routes with hashmap lookup and wildcard routes with assemble regex.
 
@@ -7,7 +7,7 @@ Based on [nikic/fast-route](https://github.com/nikic/FastRoute)
 ````javascript
 
 //es 6
-import {router, dispatcher} from 'fast-route';
+import {router, dispatcher} from 'gram-route';
 
 //options can be set as a Map, with the option name as key and the option as value
 let r = router();
@@ -93,9 +93,9 @@ server.listen(port, hostname, () => {
 ````javascript
 
 //es 5
-var router = require("fast-route");
+var router = require("gram-route");
 
-var r = router.collector();	//collector
+var r = router.router();	//router
 
 var d = router.dispatcher();	//dispatcher
 ````
