@@ -25,10 +25,10 @@ interface RouteCollectorInterface
 	 * Dazu wird der Routecollector ausgeführt, um die in ihm erhaltenen routes hinzu zufügen
 	 *
 	 * @param {string} prefix
-	 * @param collector
+	 * @param {() => void} collector
 	 * @returns {RouteGroup}
 	 */
-	group(prefix: string, collector): RouteGroup;
+	group(prefix: string, collector: () => void): RouteGroup;
 
 	/**
 	 * Eine GET route

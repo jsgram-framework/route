@@ -62,7 +62,7 @@ class RouteCollector implements RouteCollectorInterface
 	 * stelle zum schluss alle werte wiederher
 	 * und gebe die erstelle group zurück
 	 */
-	public group(prefix: string, collector): RouteGroup
+	public group(prefix: string, collector: () => void): RouteGroup
 	{
 		//alte werte sichern zum wiederherstellen
 		let pre = this.prefix;
@@ -75,7 +75,7 @@ class RouteCollector implements RouteCollectorInterface
 		let group = new RouteGroup(this.routeGroupId);
 
 		//sammle die routes ind er group ein
-		collector(this);
+		collector();
 
 		//stelle alte werte wieder her
 		this.prefix = pre;
