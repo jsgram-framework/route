@@ -1,6 +1,6 @@
 # gram-route
 
-A fast http router for node js. Matches static routes with hashmap lookup and wildcard routes with assemble regex.
+A fast http router for node. Matches static routes with hashmap lookup and wildcard routes with assembled regex.
 
 Based on [nikic/fast-route](https://github.com/nikic/FastRoute)
 
@@ -59,6 +59,7 @@ c.get("/123",(req, res) => {
 
 //the dispatcher will match the requested path
 //and returns a route object with all information's about the matched route and the paramter if the route where dynamic
+//make sure dispatcher() will created AFTER the routes are collected (after all route collectors)
 let d = dispatcher();
 
 //sample server
