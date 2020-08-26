@@ -3,9 +3,13 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
+import RouteGroup from "./RouteGroup";
+
 class Route
 {
-	private static middleware: Map<number,any> = new Map();
+	private middleware: any[] = [];
+
+	private createRouteStack: boolean = false;
 
 	public vars: object[];
 
@@ -17,14 +21,52 @@ class Route
 		public handler:any
 	) {}
 
-	public add(middleware:any)
+	public add(middleware: any)
 	{
-		Route.middleware.set(this.routeId,middleware);
+		//route eigene Middleware
+		this.middleware.push(middleware);
+
+		return this;
 	}
 
-	public static getRouteMiddleware(routeId: number)
+	/**
+	 * Erstelle den Middleware Stack zur Runtime
+	 * (aber nur ein mal, sollte der Stack noch nicht erstellt sein)
+	 *
+	 * Hole alle GroupMw und packe diese vor die route mw
+	 */
+	public prepareRoute()
 	{
-		return Route.middleware.get(routeId);
+		let groupMws: any[] = [];
+
+		for (let groupId of this.routeGroupIds) {
+			const groupMw = RouteGroup.getAllRouteMiddleware(groupId);
+
+			groupMws.push(... groupMw);
+		}
+
+		//stelle die group mw voran, da diese zuerst ausgeführt werden müssen, packe den handler als letztes
+		this.middleware = [... groupMws, ... this.middleware];
+
+		this.createRouteStack = true;
+	}
+
+	/**
+	 * Gebe alle Middleware der Route zurück, inkl dem Handler
+	 *
+	 * Der Route Stack wird nur einmal erstellt,
+	 * danach wird er in der Route gespeichert und nur noch abgerufen
+	 *
+	 * @returns {[]}
+	 */
+	public getMiddleware()
+	{
+		if(!this.createRouteStack) {
+			//wenn route noch erstellt werden muss
+			this.prepareRoute();
+		}
+
+		return this.middleware;
 	}
 }
 
