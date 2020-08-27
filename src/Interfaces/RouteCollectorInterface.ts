@@ -5,8 +5,7 @@
 
 import Route from "../Route";
 import RouteGroup from "../RouteGroup";
-
-export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD" | "ANY";
+import {httpMethod} from "../router";
 
 interface RouteCollectorInterface
 {
@@ -19,7 +18,7 @@ interface RouteCollectorInterface
 	 * @param handler
 	 * @returns {Route}
 	 */
-	add(methods:httpMethod[], path:string, handler:any): Route;
+	add(methods: httpMethod[], path: string, handler: any): Route;
 
 	/**
 	 * Eine Gruppe gibt den prefix für routes vor.
@@ -39,7 +38,7 @@ interface RouteCollectorInterface
 	 * @param handler
 	 * @returns {Route}
 	 */
-	get(path:string, handler:any): Route;
+	get(path: string, handler: any): Route;
 
 	/**
 	 * POST Route
@@ -48,7 +47,7 @@ interface RouteCollectorInterface
 	 * @param handler
 	 * @returns {Route}
 	 */
-	post(path:string, handler:any): Route;
+	post(path: string, handler: any): Route;
 
 	/**
 	 * Gebe die genereiten Routes zurück
@@ -57,7 +56,7 @@ interface RouteCollectorInterface
 	 *
 	 * @returns {Array}
 	 */
-	getData(): [Map<string, Map<string,number>>, Map<string,any>];
+	getData(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>];
 
 	/**
 	 * Gebe eine bestimmte Route zurück

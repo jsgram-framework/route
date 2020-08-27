@@ -5,13 +5,14 @@
 
 import GeneratorInterface from "../Interfaces/GeneratorInterface";
 import Route from "../Route";
-import {parse} from "path-to-regexp";
+import {parse, Token} from "path-to-regexp";
+import {httpMethod} from "../router";
 
 abstract class Generator implements GeneratorInterface
 {
-	protected staticRoutes: Map<string, Map<string,number>> = new Map();
+	protected staticRoutes: Map<httpMethod, Map<string,number>> = new Map();
 
-	protected dynamicRoutes: Map<string, Route[]> = new Map();
+	protected dynamicRoutes: Map<httpMethod, Route[]> = new Map();
 
 	/**
 	 * Die regex aller Dynamic Routes
@@ -21,7 +22,7 @@ abstract class Generator implements GeneratorInterface
 	 *
 	 * @type {Map}
 	 */
-	protected dynamicRouteList: Map<string, any[]> = new Map();
+	protected dynamicRouteList: Map<httpMethod, any[]> = new Map();
 
 	/**
 	 * Alle Handler (Route Id) der Dynamic Routes
@@ -31,7 +32,7 @@ abstract class Generator implements GeneratorInterface
 	 *
 	 * @type {Map}
 	 */
-	protected handlerList: Map<string, any[]> = new Map();
+	protected handlerList: Map<httpMethod, any[]> = new Map();
 
 	/**
 	 * Gebe an wie viele Items in einen Chunk dürfen
@@ -47,14 +48,14 @@ abstract class Generator implements GeneratorInterface
 	 * Unterteile zudem in regex und Handler
 	 *
 	 * @param {Route[]} chunk
-	 * @param {string} method
+	 * @param {httpMethod} method
 	 */
-	abstract chunkRoutes(chunk: Route[],method: string);
+	abstract chunkRoutes(chunk: Route[],method: httpMethod);
 
 	/**
 	 * @inheritDoc
 	 */
-	public generate(): [Map<string, Map<string,number>>, Map<string,any>]
+	public generate(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>]
 	{
 		return [
 			this.staticRoutes,
@@ -71,7 +72,7 @@ abstract class Generator implements GeneratorInterface
 	 */
 	public mapRoute(route: Route)
 	{
-		const regexp = parse(route.path);
+		const regexp: Token[] = parse(route.path);
 
 		let type:number = 0;
 
@@ -125,14 +126,14 @@ abstract class Generator implements GeneratorInterface
 	 *
 	 * tausche zudem / mit \/ aus
 	 *
-	 * @param {Array} data
-	 * @returns {[string , object[]]}
+	 * @param {Token[]} data
+	 * @returns {[string,number[]|string[]]}
 	 */
-	protected static createRoute(data: any[]): [string,object[]]
+	protected static createRoute(data: Token[]): [string,number[]|string[]]
 	{
 		let path: string = "";
 
-		let vars: object[] = [];
+		let vars: number[]|string[]|any[] = [];
 
 		for (let datum of data) {
 			if(typeof datum === 'string') {
@@ -152,7 +153,7 @@ abstract class Generator implements GeneratorInterface
 		return [path,vars];
 	}
 
-	protected generateDynamic(): Map<string,any>
+	protected generateDynamic(): Map<string, Map<httpMethod, any[]>>
 	{
 		//iteriere über jede method
 		for(let [method,routes] of Array.from(this.dynamicRoutes.entries())) {

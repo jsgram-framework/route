@@ -4,6 +4,7 @@
  */
 
 import RouteGroup from "./RouteGroup";
+import {httpMethod} from "./router";
 
 class Route
 {
@@ -11,14 +12,14 @@ class Route
 
 	private createRouteStack: boolean = false;
 
-	public vars: object[];
+	public vars: number[]|string[];
 
 	constructor(
-		public methods:string[],
-		public path:string,
-		public routeId:number,
-		public routeGroupIds:number[],
-		public handler:any
+		public methods: httpMethod[],
+		public path: string,
+		public routeId: number,
+		public routeGroupIds: number[],
+		public handler: any
 	) {}
 
 	public add(middleware: any)
@@ -59,7 +60,7 @@ class Route
 	 *
 	 * @returns {[]}
 	 */
-	public getMiddleware()
+	public getMiddleware(): any[]
 	{
 		if(!this.createRouteStack) {
 			//wenn route noch erstellt werden muss

@@ -5,6 +5,7 @@
 
 import Generator from "./Generator";
 import Route from "../Route";
+import {httpMethod} from "../router";
 
 /**
  * Based on:
@@ -34,7 +35,7 @@ class GroupPosBased extends Generator
 	 * Handler wird dem offset zugeordnet
 	 * offset speicher die stelle in der regex
 	 */
-	chunkRoutes(chunk: Route[], method: string)
+	chunkRoutes(chunk: Route[], method: httpMethod)
 	{
 		let routeCollector: string[] = [];
 		let handleCollector: Map<number, any[]> = new Map();

@@ -3,10 +3,11 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import RouteCollectorInterface, {httpMethod} from "../Interfaces/RouteCollectorInterface";
+import RouteCollectorInterface from "../Interfaces/RouteCollectorInterface";
 import Route from "../Route";
 import GeneratorInterface from "../Interfaces/GeneratorInterface";
 import RouteGroup from "../RouteGroup";
+import {httpMethod} from "../router";
 
 class RouteCollector implements RouteCollectorInterface
 {
@@ -103,7 +104,7 @@ class RouteCollector implements RouteCollectorInterface
 	/**
 	 * @inheritDoc
 	 */
-	public getData(): [Map<string, Map<string,number>>, Map<string,any>]
+	public getData(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>]
 	{
 		return this.generator.generate();
 	}

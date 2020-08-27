@@ -4,6 +4,7 @@
  */
 
 import Route from "../Route";
+import {httpMethod} from "../router";
 
 interface GeneratorInterface
 {
@@ -18,9 +19,9 @@ interface GeneratorInterface
 	 * regex umfasst die zusammengesetzt regex der routes
 	 * wie diese aussieht wird vom jeweiligen generator bestimmt
 	 *
-	 * @returns {[Map<string, Map<string, number>> , Map<string, {any}>]}
+	 * @returns {[Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, []>>]}
 	 */
-	generate(): [Map<string, Map<string,number>>, Map<string,any>];
+	generate(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>];
 
 	/**
 	 * füge eine Route der collection hinzu

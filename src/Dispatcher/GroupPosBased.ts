@@ -4,6 +4,7 @@
  */
 
 import Dispatcher from "./Dispatcher";
+import {httpMethod} from "../router";
 
 /**
  * Based on:
@@ -15,7 +16,7 @@ class GroupPosBased extends Dispatcher
 	/**
 	 * @inheritDoc
 	 */
-	dispatchDynamic(method: string, path: string): [number,number,Map<string,any>] | [number]
+	dispatchDynamic(method: httpMethod, path: string): [number,number,Map<string,any>] | [number]
 	{
 		let i: number = 0;	//der zu suchende chunk
 

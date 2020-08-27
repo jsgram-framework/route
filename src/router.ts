@@ -1,6 +1,8 @@
 import RouteCollectorInterface from "./Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "./Interfaces/DispatcherInterface";
 
+export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD" | "ANY";
+
 let routeCollector: RouteCollectorInterface;
 let routeDispatcher: DispatcherInterface;
 let dispatcherPath: string = "";
