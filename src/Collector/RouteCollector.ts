@@ -3,7 +3,7 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import RouteCollectorInterface from "../Interfaces/RouteCollectorInterface";
+import RouteCollectorInterface, {httpMethod} from "../Interfaces/RouteCollectorInterface";
 import Route from "../Route";
 import GeneratorInterface from "../Interfaces/GeneratorInterface";
 import RouteGroup from "../RouteGroup";
@@ -27,7 +27,7 @@ class RouteCollector implements RouteCollectorInterface
 	/**
 	 * @inheritDoc
 	 */
-	public add(methods: string[], path: string, handler: any): Route
+	public add(methods: httpMethod[], path: string, handler: any): Route
 	{
 		//neuer path mit base und prefix (von der group)
 		//path = this.base.concat(this.prefix,path.toString());

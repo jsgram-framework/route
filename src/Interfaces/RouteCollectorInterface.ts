@@ -6,18 +6,20 @@
 import Route from "../Route";
 import RouteGroup from "../RouteGroup";
 
+export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD" | "ANY";
+
 interface RouteCollectorInterface
 {
 
 	/**
 	 * Füge eine Route hinzu und gebe die erstellte route wieder zurück
 	 *
-	 * @param {string[]} methods
+	 * @param {httpMethod[]} methods
 	 * @param {string} path
 	 * @param handler
 	 * @returns {Route}
 	 */
-	add(methods:string[], path:string, handler:any): Route;
+	add(methods:httpMethod[], path:string, handler:any): Route;
 
 	/**
 	 * Eine Gruppe gibt den prefix für routes vor.
