@@ -101,6 +101,28 @@ var r = router.router();	//router
 var d = router.dispatcher();	//dispatcher
 ````
 
+## Extendable
+
+The generator, dispatcher and collector can be changed.
+
+````javascript
+import {router, dispatcher} from 'gram-route';
+
+//options
+//Generator must implement GeneratorInterface and must be compatible with the dispatcher
+//Dispatcher must implement the DispatcherInterface
+//Collector must implement the RouteCollectorInterface
+const options = {
+	generator:"",	//the require path
+	dispatcher:"",
+	collector:""
+};
+
+let r = router(options);
+
+//now every instance of router() uses the new options
+````
+
 ## Credits
 
 - Router Algorithm : [Copyright by Nikita Popov](https://github.com/nikic/FastRoute/blob/master/LICENSE).

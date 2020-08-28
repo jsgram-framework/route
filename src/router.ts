@@ -3,30 +3,67 @@ import DispatcherInterface from "./Interfaces/DispatcherInterface";
 
 export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD" | "ANY";
 
+export type routerOptions = {
+	/**
+	 * Path to the route generator.
+	 *
+	 * Must implement GeneratorInterface
+	 *
+	 * Must be compatible with the dispatcher
+	 *
+	 */
+	generator?: string;
+
+	/**
+	 * Path to the route dispatcher
+	 *
+	 * Must implement the DispatcherInterface
+	 *
+	 * Must be compatible with the generator
+	 */
+	dispatcher?: string;
+
+	/**
+	 * Path to the route collector
+	 *
+	 * Must implement RouteCollectorInterface
+	 */
+	collector?: string;
+};
+
 let routeCollector: RouteCollectorInterface;
 let routeDispatcher: DispatcherInterface;
 let dispatcherPath: string = "";
 
-function router(options: Map<string,string> = new Map): RouteCollectorInterface {
+/**
+ * Creates all parts of the router:
+ * - generator to prepare the routes for the dispatching process
+ * - dispatcher to match the routes with the path
+ * - collector to collect the routes
+ *
+ * @param {routerOptions} options
+ * @returns {RouteCollectorInterface}
+ */
+function router(options: routerOptions = {}): RouteCollectorInterface {
 	if(!routeCollector) {
 		let generatorPath = "";
-		if(options.has('generator')) {
-			generatorPath = options.get('generator');
-		} else {
+		if(!options.generator) {
 			generatorPath = "./Generator/GroupPosBased";
+		} else {
+			generatorPath = options.generator;
 		}
 
-		if(options.has('dispatcher')) {
-			dispatcherPath = options.get('dispatcher');
-		} else {
+		if(!options.dispatcher) {
 			dispatcherPath = "./Dispatcher/GroupPosBased";
+		} else {
+			dispatcherPath = options.dispatcher;
 		}
 
 		let routeCollectorPath = "";
-		if(options.has('collector')) {
-			routeCollectorPath = options.get('collector');
-		} else {
+		if(!options.collector) {
 			routeCollectorPath = "./Collector/RouteCollector";
+		} else {
+			routeCollectorPath = options.collector;
 		}
 
 		const generator = require(generatorPath);
@@ -39,6 +76,13 @@ function router(options: Map<string,string> = new Map): RouteCollectorInterface 
 	return routeCollector;
 }
 
+/**
+ * Returns the dispatcher with all generated routes
+ *
+ * call this function after the route collection
+ *
+ * @returns {DispatcherInterface}
+ */
 function dispatcher(): DispatcherInterface {
 	if(!routeDispatcher) {
 		let dispatcherClass = require(dispatcherPath);
