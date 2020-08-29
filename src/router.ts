@@ -1,7 +1,7 @@
 import RouteCollectorInterface from "./Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "./Interfaces/DispatcherInterface";
 
-export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD" | "ANY";
+export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD";
 
 export type routerOptions = {
 	/**
