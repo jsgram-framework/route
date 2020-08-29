@@ -1,4 +1,10 @@
+[![](https://gitlab.com/grammm/php-gram/phpgram/raw/master/docs/img/Feather_writing.svg.png)](https://gitlab.com/grammm/php-gram/phpgram)
+
+
 # gram-route
+
+[![pipeline status](https://gitlab.com/grammm/jsgram/route/badges/master/pipeline.svg)](https://gitlab.com/grammm/jsgram/route/-/commits/master) 
+[![pipeline status](https://img.shields.io/npm/v/gram-route)](https://www.npmjs.com/package/gram-route) 
 
 A fast http router for node. Matches static routes with hashmap lookup and wildcard routes with assembled regex.
 
