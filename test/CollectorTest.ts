@@ -1,5 +1,4 @@
 import {assert} from "chai";
-import Route from "../src/Route";
 import {createNewRouteCollector} from "./helper";
 
 
@@ -7,9 +6,11 @@ describe('Route Collector',() => {
 	it('should create a route with method get', () => {
 		const r = createNewRouteCollector();
 
-		const route = r.get("/test",() => {
+		r.get("/test",() => {
 			return "test";
 		});
+
+		const route = r.getRoute(0);
 
 		const handleReturn = route.handler();
 
@@ -21,20 +22,20 @@ describe('Route Collector',() => {
 	it('should create route and groups', function () {
 		const r = createNewRouteCollector();
 
-		let route: Route;
-		let nestedRoute: Route;
-
 		r.group("/testGroup",() => {
-			route = r.get("/test",() => {
+			r.get("/test",() => {
 				return "test";
 			});
 
 			r.group("/nested",() => {
-				nestedRoute = r.get("/test",() => {
+				r.get("/test",() => {
 					return "test nested";
 				});
 			});
 		});
+
+		const route = r.getRoute(0);
+		const nestedRoute = r.getRoute(1);
 
 		const handleReturn1 = route.handler();
 		const handleReturn2 = nestedRoute.handler();
@@ -131,5 +132,19 @@ describe('Route Collector',() => {
 
 		assert.equal(route.methods[0],"GET");
 		assert.equal(route.methods[1],"POST");
+	});
+
+	it('should create a dynamic route', function () {
+		const r = createNewRouteCollector();
+
+		r.group("/testDynamic",() => {
+			r.get("/dynamic/:id",() => {
+
+			});
+		});
+
+		const route = r.getRoute(0);
+
+		assert.equal(route.path,"\\/testDynamic\\/dynamic\\/([^\\/#\\?]+?)");
 	});
 });
