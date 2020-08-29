@@ -152,7 +152,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public any(path: string, handler: any): Route
 	{
-		return this.add(["GET","POST","PUT","PATCH","HEAD","OPTIONS","DELETE"],path,handler);
+		return this.add(["GET","POST","PUT","DELETE","OPTIONS","PATCH","HEAD"],path,handler);
 	}
 
 	/**
