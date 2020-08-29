@@ -74,9 +74,6 @@ abstract class Dispatcher implements DispatcherInterface
 			return this.dispatch('GET',path);
 		}
 
-		//prüfe auf 405
-		//TODO prüfe auf 405
-
 		return [404];
 	}
 
