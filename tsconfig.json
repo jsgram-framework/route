@@ -5,12 +5,15 @@
 		"sourceMap": true,
 		"lib": ["es5", "es6"],
 		"outDir": "./dist",
-		"rootDir": "./src",
+		"rootDirs": [
+			"./src",
+			"./test"
+		],
 		"moduleResolution": "node",
 		"declaration": true
 	},
 	"include": [
-		"src/"
+		"src/", "test/"
 	],
 	"exclude": [
 		"node_modules"
