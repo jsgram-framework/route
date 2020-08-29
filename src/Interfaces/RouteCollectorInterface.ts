@@ -5,7 +5,7 @@
 
 import Route from "../Route";
 import RouteGroup from "../RouteGroup";
-import {httpMethod} from "../router";
+import {HttpMethod} from "../router";
 
 interface RouteCollectorInterface
 {
@@ -13,12 +13,12 @@ interface RouteCollectorInterface
 	/**
 	 * Füge eine Route hinzu und gebe die erstellte route wieder zurück
 	 *
-	 * @param {httpMethod[]} methods
+	 * @param {HttpMethod[]} methods
 	 * @param {string} path
 	 * @param handler
 	 * @returns {Route}
 	 */
-	add(methods: httpMethod[], path: string, handler: any): Route;
+	add(methods: HttpMethod[], path: string, handler: any): Route;
 
 	/**
 	 * Eine Gruppe gibt den prefix für routes vor.
@@ -119,7 +119,7 @@ interface RouteCollectorInterface
 	 *
 	 * @returns {Array}
 	 */
-	getData(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>];
+	getData(): [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>];
 
 	/**
 	 * Gebe eine bestimmte Route zurück

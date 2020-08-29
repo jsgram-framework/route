@@ -4,15 +4,15 @@
  */
 
 import DispatcherInterface from "../Interfaces/DispatcherInterface";
-import {httpMethod} from "../router";
+import {HttpMethod} from "../router";
 
 abstract class Dispatcher implements DispatcherInterface
 {
-	protected staticRoutes: Map<httpMethod, Map<string,number>>;
+	protected staticRoutes: Map<HttpMethod, Map<string,number>>;
 
-	protected dynamicRoutesRegex: Map<httpMethod, any[]>;
+	protected dynamicRoutesRegex: Map<HttpMethod, any[]>;
 
-	protected dynamicRoutesHandler: Map<httpMethod, any[]>;
+	protected dynamicRoutesHandler: Map<HttpMethod, any[]>;
 
 	/**
 	 * Match die dynamic routes
@@ -23,16 +23,16 @@ abstract class Dispatcher implements DispatcherInterface
 	 * @param {string} path
 	 * @returns {[number , Map] | [number]}
 	 */
-	abstract dispatchDynamic(method: httpMethod, path: string): [number,number,Map<string,any>] | [number];
+	abstract dispatchDynamic(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number];
 
 	/**
 	 * Erhalte die static routes und die dynamic
 	 *
 	 * Jeweils ihrer method zugeordnet
 	 *
-	 * @param {[Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, []>>]} routes
+	 * @param {[Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, []>>]} routes
 	 */
-	constructor(routes: [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>])
+	constructor(routes: [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>])
 	{
 		if(!routes[0]) {
 			//keine static routes
@@ -60,7 +60,7 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * Wenn Response nicht gewfunden wurde prüfe zusätzlich auf 405 und 404
 	 */
-	public dispatch(method: httpMethod, path: string): [number,number,Map<string,any>] | [number]
+	public dispatch(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
 	{
 		const response = this.doDispatch(method,path);
 
@@ -84,11 +84,11 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * Danach dynamic mithilfe des jeweiligen dynamic disaptcher
 	 *
-	 * @param {httpMethod} method
+	 * @param {HttpMethod} method
 	 * @param {string} path
 	 * @returns {[number , Map<string, {any}>] | [number]}
 	 */
-	private doDispatch(method: httpMethod, path: string): [number,number,Map<string,any>] | [number]
+	private doDispatch(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
 	{
 		//prüfe zuerst static routes
 		const check = this.staticRoutes.get(method);

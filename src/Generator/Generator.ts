@@ -6,13 +6,13 @@
 import GeneratorInterface from "../Interfaces/GeneratorInterface";
 import Route from "../Route";
 import {parse, Token} from "path-to-regexp";
-import {httpMethod} from "../router";
+import {HttpMethod} from "../router";
 
 abstract class Generator implements GeneratorInterface
 {
-	protected staticRoutes: Map<httpMethod, Map<string,number>> = new Map();
+	protected staticRoutes: Map<HttpMethod, Map<string,number>> = new Map();
 
-	protected dynamicRoutes: Map<httpMethod, Route[]> = new Map();
+	protected dynamicRoutes: Map<HttpMethod, Route[]> = new Map();
 
 	/**
 	 * Die regex aller Dynamic Routes
@@ -22,7 +22,7 @@ abstract class Generator implements GeneratorInterface
 	 *
 	 * @type {Map}
 	 */
-	protected dynamicRouteList: Map<httpMethod, any[]> = new Map();
+	protected dynamicRouteList: Map<HttpMethod, any[]> = new Map();
 
 	/**
 	 * Alle Handler (Route Id) der Dynamic Routes
@@ -32,7 +32,7 @@ abstract class Generator implements GeneratorInterface
 	 *
 	 * @type {Map}
 	 */
-	protected handlerList: Map<httpMethod, any[]> = new Map();
+	protected handlerList: Map<HttpMethod, any[]> = new Map();
 
 	/**
 	 * Gebe an wie viele Items in einen Chunk dürfen
@@ -48,14 +48,14 @@ abstract class Generator implements GeneratorInterface
 	 * Unterteile zudem in regex und Handler
 	 *
 	 * @param {Route[]} chunk
-	 * @param {httpMethod} method
+	 * @param {HttpMethod} method
 	 */
-	abstract chunkRoutes(chunk: Route[],method: httpMethod);
+	abstract chunkRoutes(chunk: Route[],method: HttpMethod);
 
 	/**
 	 * @inheritDoc
 	 */
-	public generate(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>]
+	public generate(): [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>]
 	{
 		return [
 			this.staticRoutes,
@@ -153,7 +153,7 @@ abstract class Generator implements GeneratorInterface
 		return [path,vars];
 	}
 
-	protected generateDynamic(): Map<string, Map<httpMethod, any[]>>
+	protected generateDynamic(): Map<string, Map<HttpMethod, any[]>>
 	{
 		//iteriere über jede method
 		for(let [method,routes] of Array.from(this.dynamicRoutes.entries())) {

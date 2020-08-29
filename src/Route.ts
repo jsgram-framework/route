@@ -4,7 +4,7 @@
  */
 
 import RouteGroup from "./RouteGroup";
-import {httpMethod} from "./router";
+import {HttpMethod} from "./router";
 
 class Route
 {
@@ -15,7 +15,7 @@ class Route
 	public vars: number[]|string[];
 
 	constructor(
-		public methods: httpMethod[],
+		public methods: HttpMethod[],
 		public path: string,
 		public routeId: number,
 		public routeGroupIds: number[],

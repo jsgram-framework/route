@@ -7,7 +7,7 @@ import RouteCollectorInterface from "../Interfaces/RouteCollectorInterface";
 import Route from "../Route";
 import GeneratorInterface from "../Interfaces/GeneratorInterface";
 import RouteGroup from "../RouteGroup";
-import {httpMethod} from "../router";
+import {HttpMethod} from "../router";
 
 class RouteCollector implements RouteCollectorInterface
 {
@@ -28,7 +28,7 @@ class RouteCollector implements RouteCollectorInterface
 	/**
 	 * @inheritDoc
 	 */
-	public add(methods: httpMethod[], path: string, handler: any): Route
+	public add(methods: HttpMethod[], path: string, handler: any): Route
 	{
 		//neuer path mit base und prefix (von der group)
 		path = this.base + this.prefix + path;
@@ -158,7 +158,7 @@ class RouteCollector implements RouteCollectorInterface
 	/**
 	 * @inheritDoc
 	 */
-	public getData(): [Map<httpMethod, Map<string,number>>, Map<string, Map<httpMethod, any[]>>]
+	public getData(): [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>]
 	{
 		return this.generator.generate();
 	}

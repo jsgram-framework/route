@@ -1,9 +1,9 @@
 import RouteCollectorInterface from "./Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "./Interfaces/DispatcherInterface";
 
-export type httpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD";
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD";
 
-export type routerOptions = {
+export type RouterOptions = {
 	/**
 	 * Path to the route generator.
 	 *
@@ -41,10 +41,10 @@ let dispatcherPath: string = "";
  * - dispatcher to match the routes with the path
  * - collector to collect the routes
  *
- * @param {routerOptions} options
+ * @param {RouterOptions} options
  * @returns {RouteCollectorInterface}
  */
-function router(options: routerOptions = {}): RouteCollectorInterface {
+function router(options: RouterOptions = {}): RouteCollectorInterface {
 	if(!routeCollector) {
 		let generatorPath = "";
 		if(!options.generator) {
