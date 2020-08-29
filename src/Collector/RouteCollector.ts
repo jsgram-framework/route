@@ -73,7 +73,7 @@ class RouteCollector implements RouteCollectorInterface
 
 		let group = new RouteGroup(this.routeGroupId);
 
-		//sammle die routes ind er group ein
+		//sammle die routes in der group ein
 		collector();
 
 		//stelle alte werte wieder her
