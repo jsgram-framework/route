@@ -50,6 +50,69 @@ interface RouteCollectorInterface
 	post(path: string, handler: any): Route;
 
 	/**
+	 * Method can either be Get or Post
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	getpost(path: string, handler: any): Route;
+
+	/**
+	 * PUT Route
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	put(path: string, handler: any): Route;
+
+	/**
+	 * PATCH Route
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	patch(path: string, handler: any): Route;
+
+	/**
+	 * HEAD Route
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	head(path: string, handler: any): Route;
+
+	/**
+	 * DELETE Route
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	delete(path: string, handler: any): Route;
+
+	/**
+	 * Options Route
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	options(path: string, handler: any): Route;
+
+	/**
+	 * Any Method
+	 *
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	any(path: string, handler: any): Route;
+
+	/**
 	 * Gebe die genereiten Routes zurück
 	 *
 	 * für den dispatcher

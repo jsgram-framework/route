@@ -15,9 +15,9 @@ class RouteCollector implements RouteCollectorInterface
 
 	protected prefix: string = "";
 
-	protected routeId:number = 0;
+	protected routeId: number = 0;
 
-	protected routeGroupId:number = 0;
+	protected routeGroupId: number = 0;
 
 	protected routeGroupIds: number[] = [0];
 
@@ -31,8 +31,6 @@ class RouteCollector implements RouteCollectorInterface
 	public add(methods: httpMethod[], path: string, handler: any): Route
 	{
 		//neuer path mit base und prefix (von der group)
-		//path = this.base.concat(this.prefix,path.toString());
-
 		path = this.base + this.prefix + path;
 
 		let route = new Route(methods,path,this.routeId,[... this.routeGroupIds],handler);
@@ -99,6 +97,62 @@ class RouteCollector implements RouteCollectorInterface
 	public post(path: string, handler: any): Route
 	{
 		return this.add(["POST"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public getpost(path: string, handler: any): Route
+	{
+		return this.add(["GET","POST"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public put(path: string, handler: any): Route
+	{
+		return this.add(["PUT"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public patch(path: string, handler: any): Route
+	{
+		return this.add(["PATCH"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public head(path: string, handler: any): Route
+	{
+		return this.add(["HEAD"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public delete(path: string, handler: any): Route
+	{
+		return this.add(["DELETE"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public options(path: string, handler: any): Route
+	{
+		return this.add(["OPTIONS"],path,handler);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public any(path: string, handler: any): Route
+	{
+		return this.add(["GET","POST","PUT","PATCH","HEAD","OPTIONS","DELETE"],path,handler);
 	}
 
 	/**
