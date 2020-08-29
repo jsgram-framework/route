@@ -1,6 +1,6 @@
 {
   "name": "gram-route",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A fast http router for node. Matches static routes with hashmap lookup and wildcard routes with assembled regex",
   "author": "Jörn Heinemann <joernheinemann@gmx.de>",
   "license": "MIT",
@@ -24,10 +24,10 @@
     "ts-node": "^8.10.2",
     "typescript": "^4.0.2"
   },
-  "main": "dist/router.js",
-  "types": "dist/router.d.ts",
+  "main": "dist/src/router.js",
+  "types": "dist/src/router.d.ts",
   "files": [
-    "dist/",
+    "dist/src/",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
