@@ -6,7 +6,7 @@ test:
     - npm install
 
   script:
-    - npm coverage
+    - npm run coverage
 
   except:
     - trigger
