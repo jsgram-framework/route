@@ -2,6 +2,7 @@ import {assert} from "chai";
 import {RouterOptions} from "../src/router";
 import {createNewDispatcher, createRouteMap} from "./helper";
 import Route from "../src/Route";
+import {MockRouteGroup} from "./MockrouteGroup";
 
 function evaluateMiddleware(route: Route, expectResult: string[] = []) {
 	const mws = route.getMiddleware();
@@ -49,7 +50,7 @@ export function routeTest(options: RouterOptions = {}) {
 
 		assert.equal(status,200);
 
-		//MockRouteGroup.overrideMw();
+		MockRouteGroup.overrideMw();
 	});
 
 	it('should get Route and Group Middleware', function () {
@@ -68,7 +69,7 @@ export function routeTest(options: RouterOptions = {}) {
 
 		assert.equal(status,200);
 
-		//MockRouteGroup.overrideMw();
+		MockRouteGroup.overrideMw();
 	});
 
 	it('should get Route and Group Middleware from nested group', function () {
@@ -87,6 +88,6 @@ export function routeTest(options: RouterOptions = {}) {
 
 		assert.equal(status,200);
 
-		//MockRouteGroup.overrideMw();
+		MockRouteGroup.overrideMw();
 	});
 }
