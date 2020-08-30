@@ -80,6 +80,11 @@ export function createBigMap(r: RouteCollectorInterface)
 			r.any("",() => {
 				return "matched any dynamic";
 			});
+
+			r.get("/routeChunk1",() => {});
+			r.get("/routeChunk2",() => {});
+			r.get("/routeChunk3",() => {});
+			r.get("/routeChunk4",() => {});
 		});
 
 		r.group("/static",() => {

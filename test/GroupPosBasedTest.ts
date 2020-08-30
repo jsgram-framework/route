@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {createNewDispatcher, createNewRouteCollector} from "./helper";
+import {createNewDispatcher, createNewRouteCollector, createRouteMap} from "./helper";
 
 function evaluateStaticMatches(expectedRouteId: number, expectedStatus: number, status: number, routeId: number, params = null)
 {
@@ -24,8 +24,73 @@ function evaluateDynamicMatches(params: Map<string,any>, paramNames: string[], p
 	}
 }
 
+function evaluateBigMap(method: string, path: string, expectedRouteId: number, paramNames: string[] = [], paramValues: any[] = [])
+{
+	const d = createNewDispatcher(createRouteMap());
+
+	const [status,routeId, params] = d.dispatch(method,path);
+
+	evaluateStaticMatches(expectedRouteId,200,status,routeId);
+
+	if(paramNames.length > 0 && paramValues.length > 0) {
+		evaluateDynamicMatches(params,paramNames,paramValues);
+	}
+}
+
 describe("GroupPosBasedDispatcher",() => {
+	it('should react to no routes', function () {
+		const r = createNewRouteCollector();
+
+		const d = createNewDispatcher(r);
+
+		const [status] = d.dispatch("GET","/test");
+
+		assert.equal(status,404);
+	});
+
+	it('should react to 404 not found', function () {
+		const r = createNewRouteCollector();
+
+		r.get("/",() => {
+
+		});
+
+		const d = createNewDispatcher(r);
+
+		const [status] = d.dispatch("GET","/test");
+
+		assert.equal(status,404);
+	});
+
+	it('should react to no static route with 404', function () {
+		const r = createNewRouteCollector();
+
+		r.get("/:id",() => {
+
+		});
+
+		const d = createNewDispatcher(r);
+
+		const [status] = d.dispatch("GET","/test/21");
+
+		assert.equal(status,404);
+	});
+
 	//Static routes matchen
+	it('should match the index GET route', function () {
+		const r = createNewRouteCollector();
+
+		r.get("/",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r);
+
+		const [status, routeId, params] = d.dispatch("GET","/");
+
+		evaluateStaticMatches(0,200,status,routeId,params);
+	});
+
 	it('should match static GET route', function () {
 		const r = createNewRouteCollector();
 
@@ -138,6 +203,20 @@ describe("GroupPosBasedDispatcher",() => {
 		evaluateStaticMatches(0,200,status,routeId,params);
 
 		[status, routeId, params] = d.dispatch("POST","/test");
+
+		evaluateStaticMatches(0,200,status,routeId,params);
+	});
+
+	it('should match static GET route from HEAD method', function () {
+		const r = createNewRouteCollector();
+
+		r.get("/test",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r);
+
+		let [status, routeId, params] = d.dispatch("HEAD","/test");
 
 		evaluateStaticMatches(0,200,status,routeId,params);
 	});
@@ -268,6 +347,27 @@ describe("GroupPosBasedDispatcher",() => {
 		evaluateDynamicMatches(params,["id","id2"],[21,22]);
 	});
 
-	//match from route map with groups
+	it('should match routes in groups', function () {
+		const path = "/test1/21";
 
+		evaluateBigMap("GET",path,1,['id'],[21]);
+	});
+
+	it('should match routes in nested groups', function () {
+		const path = "/test1/nestedGroup1/nestedRoute1";
+
+		evaluateBigMap("GET",path,21);
+	});
+
+	it('should match routes in nested groups dynamic', function () {
+		const path = "/test1/nestedGroup1/nestedGroup2/nestedRoute2/21";
+
+		evaluateBigMap("GET",path,24,['id'],[21]);
+	});
+
+	it('should match routes with many placeholder', function () {
+		const path = "/dynamic/22/33/44";
+
+		evaluateBigMap("GET",path,27,['id2','id3','id4'],[22,33,44]);
+	});
 });
