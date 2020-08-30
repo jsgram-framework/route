@@ -43,7 +43,9 @@ class Route
 		for (let groupId of this.routeGroupIds) {
 			const groupMw = RouteGroup.getAllRouteMiddleware(groupId);
 
-			groupMws.push(... groupMw);
+			if(groupMw) {
+				groupMws.push(... groupMw);
+			}
 		}
 
 		//stelle die group mw voran, da diese zuerst ausgeführt werden müssen, packe den handler als letztes
