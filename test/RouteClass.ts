@@ -2,7 +2,7 @@ import {assert} from "chai";
 import {RouterOptions} from "../src/router";
 import {createNewDispatcher, createRouteMap} from "./helper";
 import Route from "../src/Route";
-import {MockRouteGroup} from "./MockrouteGroup";
+import {MockRouteGroup} from "./MockRouteGroup";
 
 function evaluateMiddleware(route: Route, expectResult: string[] = []) {
 	const mws = route.getMiddleware();
