@@ -15,7 +15,6 @@ Based on [nikic/fast-route](https://github.com/nikic/FastRoute)
 //es 6
 import {router, dispatcher} from 'gram-route';
 
-//options can be set as a Map, with the option name as key and the option as value
 let r = router();
 
 //a static route without parameters
