@@ -5,7 +5,7 @@
 
 class RouteGroup
 {
-	private static middleware: Map<number,any[]> = new Map();
+	protected static middleware: Map<number,any[]> = new Map();
 
 	constructor(public groupId: number) {}
 
