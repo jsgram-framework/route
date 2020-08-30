@@ -180,9 +180,13 @@ export function createMapWithMiddleware(r: RouteCollectorInterface)
 
 				}).add(() => {
 					return "routeMw4";
+				}).add(() => {
+					return "routeMw4.1";
 				});
 			}).add(() => {
 				return "mwGroup3";
+			}).add(() => {
+				return "mwGroup3.1"
 			});
 
 			r.get("/routeMw3",() => {
