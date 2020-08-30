@@ -34,25 +34,14 @@ abstract class Dispatcher implements DispatcherInterface
 	 */
 	constructor(routes: [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>])
 	{
-		if(!routes[0]) {
-			//keine static routes
-			this.staticRoutes = new Map();
-		} else {
-			this.staticRoutes = routes[0];
-		}
+		this.staticRoutes = routes[0];
 
 		let dynamic: Map<string,any>;
 
-		if(!routes[1]) {
-			//keine dynamic Routes
-			this.dynamicRoutesRegex = new Map();
-			this.dynamicRoutesHandler = new Map();
-		} else {
-			dynamic = routes[1];
+		dynamic = routes[1];
 
-			this.dynamicRoutesRegex = dynamic.get('regex');
-			this.dynamicRoutesHandler = dynamic.get('dynamichandler');
-		}
+		this.dynamicRoutesRegex = dynamic.get('regex');
+		this.dynamicRoutesHandler = dynamic.get('dynamichandler');
 	}
 
 	/**
