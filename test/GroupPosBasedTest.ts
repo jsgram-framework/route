@@ -370,4 +370,22 @@ describe("GroupPosBasedDispatcher",() => {
 
 		evaluateBigMap("GET",path,27,['id2','id3','id4'],[22,33,44]);
 	});
+
+	//check if generated routes could match in long running applications
+	it('should match routes while long running', function () {
+		const method = "GET";
+
+		const d = createNewDispatcher(createRouteMap());
+
+		//create new path with i for id2, i+1 for id3 and i+2 for id4 e.g. run 800 -> i = 800 id2 = 800, id3 = 801, id4 = 802
+
+		for (let i = 0; i< 1000; ++i) {
+			const path = "/dynamic/"+ (i) + "/" + (i+1) + "/" + (i+2);
+
+			let [status,routeId, params] = d.dispatch(method,path);
+
+			evaluateStaticMatches(27,200,status,routeId);
+			evaluateDynamicMatches(params,['id2','id3','id4'],[(i),(i+1),(i+2)]);
+		}
+	});
 });
