@@ -57,7 +57,7 @@ r.group("/admin",() => {
 	});
 });
 
-
+// router() will always returns the same instance with the same options (see Extendable)
 let c = router();
 
 c.get("/123",(req, res) => {
@@ -74,8 +74,8 @@ let d = dispatcher();
 var http = require('http');
 
 const server = http.createServer(function (req, res) {
-	//result contains the status (e.g. 200 or 404), the route object and the parameters
-	// [status,route object,parameter]
+	//result contains the status (e.g. 200 or 404), the route id and the parameters
+	// [status,route id,parameter]
 	let result = d.dispatch(req.method,req.url);
 
 	if(result[0] === 200) {
@@ -84,7 +84,11 @@ const server = http.createServer(function (req, res) {
 
 		let callback = route.handler;	//handler is in the case a callback
 
+		let middleware = route.getMiddleware();	//retuns all middleware to this route (group and route middleware) as an array
+
 		callback(req,res, ... Array.from(result[2].values()));
+	} else {
+		//not found, 404
 	}
 
 	res.end();
