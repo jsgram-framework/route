@@ -415,19 +415,19 @@ export function testDispatcher(options: RouterOptions = {})
 	it('should match routes in nested groups', function () {
 		const path = "/test1/nestedGroup1/nestedRoute1";
 
-		evaluateBigMap("GET",path,21);
+		evaluateBigMap("GET",path,29);
 	});
 
 	it('should match routes in nested groups dynamic', function () {
 		const path = "/test1/nestedGroup1/nestedGroup2/nestedRoute2/21";
 
-		evaluateBigMap("GET",path,24,options,['id'],[21]);
+		evaluateBigMap("GET",path,32,options,['id'],[21]);
 	});
 
 	it('should match routes with many placeholder', function () {
 		const path = "/dynamic/22/33/44";
 
-		evaluateBigMap("GET",path,27,options,['id2','id3','id4'],[22,33,44]);
+		evaluateBigMap("GET",path,35,options,['id2','id3','id4'],[22,33,44]);
 	});
 
 	//check if generated routes could match in long running applications
@@ -443,7 +443,7 @@ export function testDispatcher(options: RouterOptions = {})
 
 			let [status,routeId, params] = d.dispatch(method,path);
 
-			evaluateStaticMatches(27,200,status,routeId);
+			evaluateStaticMatches(35,200,status,routeId);
 			evaluateDynamicMatches(params,['id2','id3','id4'],[(i),(i+1),(i+2)]);
 		}
 	});

@@ -81,10 +81,18 @@ export function createBigMap(r: RouteCollectorInterface)
 				return "matched any dynamic";
 			});
 
-			r.get("/routeChunk1",() => {});
-			r.get("/routeChunk2",() => {});
-			r.get("/routeChunk3",() => {});
-			r.get("/routeChunk4",() => {});
+			r.get("/routeChunk1/:id",() => {});
+			r.get("/routeChunk2/:id",() => {});
+			r.get("/routeChunk3/:id",() => {});
+			r.get("/routeChunk4/:id",() => {});
+			r.get("/routeChunk5/:id",() => {});
+			r.get("/routeChunk6/:id",() => {});
+			r.get("/routeChunk7/:id",() => {});
+			r.get("/routeChunk8/:id",() => {});
+			r.get("/routeChunk9/:id",() => {});
+			r.get("/routeChunk10/:id",() => {});
+			r.get("/routeChunk11/:id",() => {});
+			r.get("/routeChunk12/:id",() => {});
 		});
 
 		r.group("/static",() => {
