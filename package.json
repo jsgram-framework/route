@@ -14,7 +14,8 @@
     "route",
     "fast",
     "fast route",
-    "gram"
+    "gram",
+    "jsgram"
   ],
   "dependencies": {
     "path-to-regexp": "^6.1.0"
