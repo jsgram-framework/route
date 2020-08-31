@@ -1,3 +1,12 @@
+/**
+ * @package gram-route
+ *
+ * @link https://gitlab.com/grammm/jsgram/route
+ * @licence https://gitlab.com/grammm/jsgram/route/-/blob/master/LICENSE
+ *
+ * @author Jörn Heinemann <joernheinemann@gxm.de>
+ */
+
 import RouteCollectorInterface from "./Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "./Interfaces/DispatcherInterface";
 

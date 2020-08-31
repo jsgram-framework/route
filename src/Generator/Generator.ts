@@ -1,5 +1,9 @@
 /**
- * @package fast-route
+ * @package gram-route
+ *
+ * @link https://gitlab.com/grammm/jsgram/route
+ * @licence https://gitlab.com/grammm/jsgram/route/-/blob/master/LICENSE
+ *
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
