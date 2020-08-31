@@ -52,18 +52,13 @@ class GroupPosBased extends Generator
 
 		let regex = '^(?:' + routeCollector.join('|') + ')$';
 
-		if(!this.dynamicRouteList.has(method)) {
-			//array für method noch nicht erstellt
-			this.dynamicRouteList.set(method,[regex])
-		} else {
-			this.dynamicRouteList.get(method).push(regex);
-		}
+		(!this.dynamicRouteList.has(method))
+			? this.dynamicRouteList.set(method,[regex])			//create new Array for this method
+			: this.dynamicRouteList.get(method).push(regex);	//use the existing Array
 
-		if(!this.handlerList.has(method)) {
-			this.handlerList.set(method,[handleCollector]);
-		} else {
-			this.handlerList.get(method).push(handleCollector);
-		}
+		(!this.handlerList.has(method))
+			? this.handlerList.set(method,[handleCollector])
+			: this.handlerList.get(method).push(handleCollector);
 	}
 }
 
