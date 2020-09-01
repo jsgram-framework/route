@@ -57,6 +57,46 @@ r.group("/admin",() => {
 	});
 });
 
+//Adding middleware to a route with the add() function from the route object
+r.get("/routeWithMiddleware",() => {
+	
+}).add(() => {
+	
+});
+
+//Adding more middleware to a route
+//add() returns the route object
+r.get("/routeWithMoreMiddleware",() => {
+	
+})
+.add(() => {
+	
+})
+.add(() => {
+	
+});
+
+//Adding middleware to a group
+//All routes in this group will get this middleware
+r.group("/admin", () => {
+	r.get("",() => {
+		//admin index
+	});
+	
+	r.group("/user", () => {
+		r.get("/:id",() => {
+			//Get user
+		});
+		
+		r.post("",() => {
+			//Add user
+		});
+	});
+}).add(() => {
+	//e.g. authentication middleware to protected the endpoints /admin*
+});
+
+
 // router() will always returns the same instance with the same options (see Extendable)
 let c = router();
 
@@ -129,9 +169,12 @@ const options = {
 	collector:""
 };
 
-let r = router(options);
+let r = router(options);	//now every instance of router() uses the new options
 
-//now every instance of router() uses the new options
+//e.g. the createRoute function in collector can be overridden
+//if another route object is needed (e.g. to handle middleware different)
+//so you don't need to rewrite the collector  
+
 ````
 
 ## Credits
