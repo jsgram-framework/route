@@ -37,7 +37,7 @@ class RouteCollector implements RouteCollectorInterface
 		//neuer path mit base und prefix (von der group)
 		path = this.base + this.prefix + path;
 
-		let route = new Route(methods,path,this.routeId,[... this.routeGroupIds],handler);
+		const route = this.createRoute(methods,path,handler);
 
 		this.routes.set(this.routeId,route);
 
@@ -68,14 +68,14 @@ class RouteCollector implements RouteCollectorInterface
 	public group(prefix: string, collector: () => void): RouteGroup
 	{
 		//alte werte sichern zum wiederherstellen
-		let pre = this.prefix;
-		let oldGroupIds = [... this.routeGroupIds];	//kopiere die derzeiten werte
+		const pre = this.prefix;
+		const oldGroupIds = [... this.routeGroupIds];	//kopiere die derzeiten werte
 
 		this.prefix += prefix;
 		++this.routeGroupId;
 		this.routeGroupIds.push(this.routeGroupId);
 
-		let group = new RouteGroup(this.routeGroupId);
+		const group = new RouteGroup(this.routeGroupId);
 
 		//sammle die routes in der group ein
 		collector();
@@ -175,6 +175,27 @@ class RouteCollector implements RouteCollectorInterface
 		return this.routes.get(id);
 	}
 
+	/**
+	 * Creates a new Route
+	 *
+	 * This method can be override by a child class of RouteCollector
+	 * to create another Route Class
+	 *
+	 * @param {HttpMethod[]} methods
+	 * @param {string} path
+	 * @param handler
+	 * @returns {Route}
+	 */
+	protected createRoute(methods: HttpMethod[], path: string, handler: any): Route
+	{
+		return new Route(
+			methods,
+			path,
+			this.routeId,
+			[... this.routeGroupIds],
+			handler
+		);
+	}
 }
 
 export default RouteCollector;
