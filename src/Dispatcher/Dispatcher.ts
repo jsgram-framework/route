@@ -9,10 +9,11 @@
 
 import DispatcherInterface from "../Interfaces/DispatcherInterface";
 import {HttpMethod} from "../router";
+import {StaticRoutes} from "../Generator/Generator";
 
 abstract class Dispatcher implements DispatcherInterface
 {
-	protected staticRoutes: Map<HttpMethod, Map<string,number>>;
+	protected staticRoutes: StaticRoutes;
 
 	protected dynamicRoutesRegex: Map<HttpMethod, any[]>;
 
@@ -36,7 +37,7 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * @param {[Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, []>>]} routes
 	 */
-	constructor(routes: [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>])
+	constructor(routes: [StaticRoutes, Map<string, Map<HttpMethod, any[]>>])
 	{
 		let dynamic: Map<string,any>;
 

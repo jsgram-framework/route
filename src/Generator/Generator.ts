@@ -12,9 +12,11 @@ import Route from "../Route";
 import {parse, Token} from "path-to-regexp";
 import {HttpMethod} from "../router";
 
+export type StaticRoutes = Map<HttpMethod, Map<string,number>>;
+
 abstract class Generator implements GeneratorInterface
 {
-	protected staticRoutes: Map<HttpMethod, Map<string,number>> = new Map();
+	protected staticRoutes: StaticRoutes = new Map();
 
 	protected dynamicRoutes: Map<HttpMethod, Route[]> = new Map();
 
@@ -59,7 +61,7 @@ abstract class Generator implements GeneratorInterface
 	/**
 	 * @inheritDoc
 	 */
-	public generate(): [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>]
+	public generate(): [StaticRoutes, Map<string, Map<HttpMethod, any[]>>]
 	{
 		return [
 			this.staticRoutes,
