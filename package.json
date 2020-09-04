@@ -1,6 +1,6 @@
 {
   "name": "gram-route",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A fast http router for node. Matches static routes with hashmap lookup and wildcard routes with assembled regex",
   "author": "Jörn Heinemann <joernheinemann@gmx.de>",
   "license": "MIT",
