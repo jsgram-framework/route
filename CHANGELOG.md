@@ -2,7 +2,7 @@
 
 # 1.0.1
 
-- since 2020/09/
+- since 2020/09/04
 - es2018 used for typescript target
 
 # 1.0.0
