@@ -7,21 +7,21 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import Generator from "./Generator";
-import Route from "../Route";
-import {HttpMethod} from "../router";
+import Route from "../../Route";
+import {HttpMethod} from "../../router";
+import RegexBasedGenerator from "./RegexBasedGenerator";
 
 /**
  * Based on:
  * @link http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html
  * @link https://github.com/nikic/FastRoute
  */
-class GroupPosBased extends Generator
+class GroupPosBased extends RegexBasedGenerator
 {
 	/**
 	 * @inheritDoc
 	 */
-	getChunkSize(): number
+	protected getChunkSize(): number
 	{
 		return 10;
 	}
@@ -39,7 +39,7 @@ class GroupPosBased extends Generator
 	 * Handler wird dem offset zugeordnet
 	 * offset speicher die stelle in der regex
 	 */
-	chunkRoutes(chunk: Route[], method: HttpMethod)
+	protected chunkRoutes(chunk: Route[], method: HttpMethod)
 	{
 		let routeCollector: string[] = [];
 		let handleCollector: Map<number, any[]> = new Map();

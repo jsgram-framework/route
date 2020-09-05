@@ -7,21 +7,26 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import Dispatcher from "./Dispatcher";
-import {HttpMethod} from "../router";
+import {HttpMethod} from "../../router";
+import RegexBasedDispatcher from "./RegexBasedDispatcher";
 
 /**
  * Based on:
  * @link http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html
  * @link https://github.com/nikic/FastRoute
  */
-class GroupPosBased extends Dispatcher
+class GroupPosBased extends RegexBasedDispatcher
 {
 	/**
 	 * @inheritDoc
 	 */
 	dispatchDynamic(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
 	{
+		if(false === this.dynamicRoutesRegex.has(method)) {
+			//es die method nicht bei den dynamic routes
+			return [404];
+		}
+
 		let i: number = 0;	//der zu suchende chunk
 
 		for (let regex of this.dynamicRoutesRegex.get(method)) {
