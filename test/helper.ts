@@ -62,7 +62,7 @@ export function createBigMap(r: RouteCollectorInterface)
 				return "matched HEAD dynamic";
 			});
 
-			r.any("",() => {
+			r.any("/any",() => {
 				return "matched any dynamic";
 			});
 
