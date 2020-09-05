@@ -9,15 +9,11 @@
 
 import DispatcherInterface from "../Interfaces/DispatcherInterface";
 import {HttpMethod} from "../router";
-import {StaticRoutes} from "../Generator/Generator";
+import {StaticRoutes} from "../Interfaces/GeneratorInterface";
 
 abstract class Dispatcher implements DispatcherInterface
 {
 	protected staticRoutes: StaticRoutes;
-
-	protected dynamicRoutesRegex: Map<HttpMethod, any[]>;
-
-	protected dynamicRoutesHandler: Map<HttpMethod, any[]>;
 
 	/**
 	 * Match die dynamic routes
@@ -35,16 +31,11 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * Jeweils ihrer method zugeordnet
 	 *
-	 * @param {[Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, []>>]} routes
+	 * @param {StaticRoutes} routes
 	 */
-	constructor(routes: [StaticRoutes, Map<string, Map<HttpMethod, any[]>>])
+	constructor(routes: StaticRoutes)
 	{
-		let dynamic: Map<string,any>;
-
-		[this.staticRoutes,dynamic] = routes;
-
-		this.dynamicRoutesRegex = dynamic.get('regex');
-		this.dynamicRoutesHandler = dynamic.get('dynamichandler');
+		this.staticRoutes = routes;
 	}
 
 	/**
@@ -88,11 +79,6 @@ abstract class Dispatcher implements DispatcherInterface
 		if(check && check.has(path)) {
 			//route hat mit static routes gematcht
 			return [200,check.get(path),new Map()];
-		}
-
-		if(false === this.dynamicRoutesRegex.has(method)) {
-			//es die method nicht bei den dynamic routes
-			return [404];
 		}
 
 		//dispatch dynamic

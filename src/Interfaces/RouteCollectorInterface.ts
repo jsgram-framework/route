@@ -10,6 +10,7 @@
 import Route from "../Route";
 import RouteGroup from "../RouteGroup";
 import {HttpMethod} from "../router";
+import {StaticRoutes} from "./GeneratorInterface";
 
 interface RouteCollectorInterface
 {
@@ -123,7 +124,7 @@ interface RouteCollectorInterface
 	 *
 	 * @returns {Array}
 	 */
-	getData(): [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>];
+	getData(): [StaticRoutes, any];
 
 	/**
 	 * Gebe eine bestimmte Route zurück

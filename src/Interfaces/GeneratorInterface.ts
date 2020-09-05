@@ -10,6 +10,8 @@
 import Route from "../Route";
 import {HttpMethod} from "../router";
 
+export type StaticRoutes = Map<HttpMethod, Map<string,number>>;
+
 interface GeneratorInterface
 {
 	/**
@@ -23,9 +25,9 @@ interface GeneratorInterface
 	 * regex umfasst die zusammengesetzt regex der routes
 	 * wie diese aussieht wird vom jeweiligen generator bestimmt
 	 *
-	 * @returns {[Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, []>>]}
+	 * @returns {[StaticRoutes, any]}
 	 */
-	generate(): [Map<HttpMethod, Map<string,number>>, Map<string, Map<HttpMethod, any[]>>];
+	generate(): [StaticRoutes, any];
 
 	/**
 	 * füge eine Route der collection hinzu

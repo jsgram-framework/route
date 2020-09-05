@@ -7,12 +7,10 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import GeneratorInterface from "../Interfaces/GeneratorInterface";
+import GeneratorInterface, {StaticRoutes} from "../Interfaces/GeneratorInterface";
 import Route from "../Route";
 import {parse, Token} from "path-to-regexp";
 import {HttpMethod} from "../router";
-
-export type StaticRoutes = Map<HttpMethod, Map<string,number>>;
 
 abstract class Generator implements GeneratorInterface
 {
@@ -21,47 +19,19 @@ abstract class Generator implements GeneratorInterface
 	protected dynamicRoutes: Map<HttpMethod, Route[]> = new Map();
 
 	/**
-	 * Die regex aller Dynamic Routes
-	 * geordnet nach ihrer method
+	 * Erstellt die Dynamic Routes
 	 *
-	 * Wie das Array angeordnet ist bestimmt der jeweilige Generator
+	 * Das Return hängt von dem jeweiligen Generator ab
+	 * deswegen any
 	 *
-	 * @type {Map}
+	 * @returns {any}
 	 */
-	protected dynamicRouteList: Map<HttpMethod, any[]> = new Map();
-
-	/**
-	 * Alle Handler (Route Id) der Dynamic Routes
-	 * geordnet nach ihrer Method
-	 *
-	 * Wie das Array angeordnet ist bestimmt der jeweilige Generator
-	 *
-	 * @type {Map}
-	 */
-	protected handlerList: Map<HttpMethod, any[]> = new Map();
-
-	/**
-	 * Gebe an wie viele Items in einen Chunk dürfen
-	 * chuck size
-	 *
-	 * @returns {number}
-	 */
-	abstract getChunkSize(): number;
-
-	/**
-	 * Erstelle die Chunks und sortiere die chunks in die jeweilige Method ein
-	 *
-	 * Unterteile zudem in regex und Handler
-	 *
-	 * @param {Route[]} chunk
-	 * @param {HttpMethod} method
-	 */
-	abstract chunkRoutes(chunk: Route[],method: HttpMethod);
+	protected abstract generateDynamic(): any;
 
 	/**
 	 * @inheritDoc
 	 */
-	public generate(): [StaticRoutes, Map<string, Map<HttpMethod, any[]>>]
+	public generate(): [StaticRoutes, any]
 	{
 		return [
 			this.staticRoutes,
@@ -159,30 +129,6 @@ abstract class Generator implements GeneratorInterface
 		return [path,vars];
 	}
 
-	protected generateDynamic(): Map<string, Map<HttpMethod, any[]>>
-	{
-		//iteriere über jede method
-		for(let [method,routes] of Array.from(this.dynamicRoutes.entries())) {
-			let chunkSize = Generator.generateChunkSize(routes.length,this.getChunkSize());
-
-			//array chunk
-			for (let i = 0, j = routes.length; i < j; i += chunkSize) {
-				this.chunkRoutes(routes.slice(i,i+chunkSize),method);
-			}
-		}
-
-		return new Map([
-			["regex",this.dynamicRouteList],
-			["dynamichandler",this.handlerList]
-		])
-	}
-
-	protected static generateChunkSize(count:number, chunkSize:number): number
-	{
-		let approxChunks = Math.max(1,Math.round(count/chunkSize));	//wie viele Chunks lassen sich erstellen (muss min. einen geben)
-
-		return Math.ceil(count/approxChunks);
-	}
 }
 
 export default Generator;
