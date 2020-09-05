@@ -25,9 +25,9 @@ function evaluateDynamicMatches(params: Map<string,any>, paramNames: string[], p
 	}
 }
 
-function evaluateBigMap(method: string, path: string, expectedRouteId: number, routerOptions: RouterOptions = {}, paramNames: string[] = [], paramValues: any[] = [])
+function evaluateBigMap(method: string, path: string, expectedRouteId: number, routerOptions: RouterOptions, paramNames: string[] = [], paramValues: any[] = [])
 {
-	const d = createNewDispatcher(createRouteMap(routerOptions));
+	const d = createNewDispatcher(createRouteMap(routerOptions),routerOptions);
 
 	const [status,routeId, params] = d.dispatch(method,path);
 
@@ -38,12 +38,12 @@ function evaluateBigMap(method: string, path: string, expectedRouteId: number, r
 	}
 }
 
-export function testDispatcher(options: RouterOptions = {})
+export function testDispatcher(options: RouterOptions)
 {
 	it('should react to no routes', function () {
 		const r = createNewRouteCollector(options);
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status] = d.dispatch("GET","/test");
 
@@ -55,7 +55,7 @@ export function testDispatcher(options: RouterOptions = {})
 
 		r.get("/",() => {});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status] = d.dispatch("GET","/test");
 
@@ -67,7 +67,7 @@ export function testDispatcher(options: RouterOptions = {})
 
 		r.get("/:id",() => {});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status] = d.dispatch("GET","/test/21");
 
@@ -82,7 +82,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test"
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("GET","/");
 
@@ -96,7 +96,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("GET","/test");
 
@@ -110,7 +110,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("POST","/test");
 
@@ -124,7 +124,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("PUT","/test");
 
@@ -138,7 +138,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("DELETE","/test");
 
@@ -152,7 +152,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("HEAD","/test");
 
@@ -166,7 +166,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("PATCH","/test");
 
@@ -180,7 +180,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("POST","/test");
 
@@ -194,7 +194,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		let [status, routeId, params] = d.dispatch("GET","/test");
 
@@ -212,7 +212,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		let [status, routeId, params] = d.dispatch("HEAD","/test");
 
@@ -227,7 +227,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("GET","/test/21/22");
 
@@ -242,7 +242,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("POST","/test/21/22");
 
@@ -257,7 +257,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("PUT","/test/21/22");
 
@@ -272,7 +272,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("DELETE","/test/21/22");
 
@@ -287,7 +287,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("HEAD","/test/21/22");
 
@@ -302,7 +302,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("PATCH","/test/21/22");
 
@@ -317,7 +317,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const [status, routeId, params] = d.dispatch("POST","/test/21/22");
 
@@ -326,13 +326,13 @@ export function testDispatcher(options: RouterOptions = {})
 	});
 
 	it('should match dynamic getpost route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		r.getpost("/test/:id/:id2",() => {
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		let [status, routeId, params] = d.dispatch("GET","/test/21/22");
 
@@ -353,7 +353,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		let [status, routeId, params] = d.dispatch("GET","/test/21");
 
@@ -372,7 +372,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		let [status, routeId, params] = d.dispatch("GET","/test/unknownPart123/21");
 
@@ -391,7 +391,7 @@ export function testDispatcher(options: RouterOptions = {})
 			return "test";
 		});
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		//try with u
 		let [status, routeId, params] = d.dispatch("GET","/u/21");
@@ -415,7 +415,7 @@ export function testDispatcher(options: RouterOptions = {})
 	it('should match routes in nested groups', function () {
 		const path = "/test1/nestedGroup1/nestedRoute1";
 
-		evaluateBigMap("GET",path,29);
+		evaluateBigMap("GET",path,29,options);
 	});
 
 	it('should match routes in nested groups dynamic', function () {
@@ -434,7 +434,7 @@ export function testDispatcher(options: RouterOptions = {})
 	it('should match routes while long running', function () {
 		const method = "GET";
 
-		const d = createNewDispatcher(createRouteMap());
+		const d = createNewDispatcher(createRouteMap(options),options);
 
 		//create new path with i for id2, i+1 for id3 and i+2 for id4 e.g. run 800 -> i = 800 id2 = 800, id3 = 801, id4 = 802
 

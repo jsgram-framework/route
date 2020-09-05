@@ -2,15 +2,8 @@ import {RouterOptions} from "../src/router";
 import RouteCollectorInterface from "../src/Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "../src/Interfaces/DispatcherInterface";
 
-export function createNewRouteCollector(options: RouterOptions = {}): RouteCollectorInterface
+export function createNewRouteCollector(options: RouterOptions): RouteCollectorInterface
 {
-	let generatorPath = "";
-	if(!options.generator) {
-		generatorPath = "../src/Generator/RegexBased/GroupPosBased";
-	} else {
-		generatorPath = options.generator;
-	}
-
 	let routeCollectorPath = "";
 	if(!options.collector) {
 		routeCollectorPath = "../src/Collector/RouteCollector";
@@ -18,24 +11,16 @@ export function createNewRouteCollector(options: RouterOptions = {}): RouteColle
 		routeCollectorPath = options.collector;
 	}
 
-	const generator = require(generatorPath);
+	const generator = require(options.generator);
 
 	const routeCollectorClass = require(routeCollectorPath);
 
 	return new routeCollectorClass.default(new generator.default());
 }
 
-export function createNewDispatcher(collector: RouteCollectorInterface, options: RouterOptions = {}): DispatcherInterface
+export function createNewDispatcher(collector: RouteCollectorInterface, options: RouterOptions): DispatcherInterface
 {
-	let dispatcherPath = "";
-
-	if(!options.dispatcher) {
-		dispatcherPath = "../src/Dispatcher/RegexBased/GroupPosBased";
-	} else {
-		dispatcherPath = options.dispatcher;
-	}
-
-	let dispatcherClass = require(dispatcherPath);
+	let dispatcherClass = require(options.dispatcher);
 
 	return new dispatcherClass.default(collector.getData());
 }
@@ -210,7 +195,7 @@ export function createMapWithMiddleware(r: RouteCollectorInterface)
 	});
 }
 
-export function createRouteMap(options: RouterOptions = {}, mapType: number = 1): RouteCollectorInterface
+export function createRouteMap(options: RouterOptions, mapType: number = 1): RouteCollectorInterface
 {
 	const r = createNewRouteCollector(options);
 

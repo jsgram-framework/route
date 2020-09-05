@@ -1,10 +1,15 @@
 import {assert} from "chai";
 import {createNewRouteCollector} from "./helper";
+import {RouterOptions} from "../src/router";
 
+const options:RouterOptions = {
+	generator:"../src/Generator/RegexBased/GroupPosBased",
+	dispatcher:"../src/Dispatcher/RegexBased/GroupPosBased"
+};
 
 describe('Route Collector',() => {
 	it('should create a route with method get', () => {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		r.get("/test",() => {
 			return "test";
@@ -20,7 +25,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create route and groups', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		r.group("/testGroup",() => {
 			r.get("/test",() => {
@@ -48,7 +53,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create post route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.post("/test",() => {
 
@@ -58,7 +63,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create put route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.put("/test",() => {
 
@@ -68,7 +73,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create delete route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.delete("/test",() => {
 
@@ -78,7 +83,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create head route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.head("/test",() => {
 
@@ -88,7 +93,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create patch route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.patch("/test",() => {
 
@@ -98,7 +103,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create options route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.options("/test",() => {
 
@@ -108,7 +113,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create any route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.any("/test",() => {
 
@@ -124,7 +129,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create getpost route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		const route = r.getpost("/test",() => {
 
@@ -135,7 +140,7 @@ describe('Route Collector',() => {
 	});
 
 	it('should create a dynamic route', function () {
-		const r = createNewRouteCollector();
+		const r = createNewRouteCollector(options);
 
 		r.group("/testDynamic",() => {
 			r.get("/dynamic/:id",() => {

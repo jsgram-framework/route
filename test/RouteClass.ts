@@ -15,11 +15,11 @@ function evaluateMiddleware(route: Route, expectResult: string[] = []) {
 	}
 }
 
-export function routeTest(options: RouterOptions = {}) {
+export function routeTest(options: RouterOptions) {
 	it('should get a Route', function () {
 		const r = createRouteMap(options);
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const path = "/test1/21";
 		const method = "GET";
@@ -37,7 +37,7 @@ export function routeTest(options: RouterOptions = {}) {
 	it('should get Route Middleware', function () {
 		const r = createRouteMap(options,2);
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const path = "/routeMw1";
 		const method = "GET";
@@ -56,7 +56,7 @@ export function routeTest(options: RouterOptions = {}) {
 	it('should get Route and Group Middleware', function () {
 		const r = createRouteMap(options,2);
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const path = "/mwGroup1/routeMw2";
 		const method = "GET";
@@ -75,7 +75,7 @@ export function routeTest(options: RouterOptions = {}) {
 	it('should get Route and Group Middleware from nested group', function () {
 		const r = createRouteMap(options,2);
 
-		const d = createNewDispatcher(r);
+		const d = createNewDispatcher(r,options);
 
 		const path = "/mwGroup1/mwGroup2/mwGroup3/routeMw4";
 		const method = "GET";
