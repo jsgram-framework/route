@@ -1,6 +1,7 @@
 import Generator from "../Generator";
 import {HttpMethod} from "../../router";
 import Route from "../../Route";
+import {Token} from "path-to-regexp";
 
 abstract class RegexBasedGenerator extends Generator
 {
@@ -41,6 +42,49 @@ abstract class RegexBasedGenerator extends Generator
 	 * @param {HttpMethod} method
 	 */
 	protected abstract chunkRoutes(chunk: Route[],method: HttpMethod);
+
+	/**
+	 * @inheritDoc
+	 */
+	protected prepareDynamicRoute(route: Route,regexp: Token[])
+	{
+		let [path, vars] = this.createRoute(regexp);
+
+		route.path = path;	//gebe den geparsten path der route
+		route.vars = vars;	//die gefunden vars mit name
+	}
+
+	/**
+	 * Füge die einzelnen parts der static route zusammen
+	 *
+	 * tausche zudem / mit \/ aus
+	 *
+	 * @param {Token[]} data
+	 * @returns {[string,number[]|string[]]}
+	 */
+	protected createRoute(data: Token[]): [string,number[]|string[]]
+	{
+		let path: string = "";
+
+		let vars: number[]|string[]|any[] = [];
+
+		for (let datum of data) {
+			if(typeof datum === 'string') {
+				//static teil der route
+				path += datum.replace(/\//g, '\\/');
+
+				continue;
+			}
+
+			if(datum !== null && typeof datum === 'object') {
+				//parameter teil
+				vars.push(datum.name); //name des objects von path-to-regexp
+				path += datum.prefix.replace(/\//g, '\\/') + '(' + datum.pattern + ')';
+			}
+		}
+
+		return [path,vars];
+	}
 
 	/**
 	 * @inheritDoc

@@ -29,6 +29,16 @@ abstract class Generator implements GeneratorInterface
 	protected abstract generateDynamic(): any;
 
 	/**
+	 * Bereitet die Route nach dem parsen vor
+	 *
+	 * Erhält die Route und das Ergebnis des Parsers
+	 *
+	 * @param {Route} route
+	 * @param {Token[]} regexp
+	 */
+	protected abstract prepareDynamicRoute(route: Route, regexp: Token[]);
+
+	/**
 	 * @inheritDoc
 	 */
 	public generate(): [StaticRoutes, any]
@@ -59,10 +69,7 @@ abstract class Generator implements GeneratorInterface
 			//dynamic route
 			type = 1;
 
-			let [path, vars] = this.createRoute(regexp);
-
-			route.path = path;	//gebe den geparsten path der route
-			route.vars = vars;	//die gefunden vars mit name
+			this.prepareDynamicRoute(route,regexp);
 		}
 
 		//trenne route in static und dynamic
@@ -96,38 +103,6 @@ abstract class Generator implements GeneratorInterface
 				}
 			}
 		}
-	}
-
-	/**
-	 * Füge die einzelnen parts der static route zusammen
-	 *
-	 * tausche zudem / mit \/ aus
-	 *
-	 * @param {Token[]} data
-	 * @returns {[string,number[]|string[]]}
-	 */
-	protected createRoute(data: Token[]): [string,number[]|string[]]
-	{
-		let path: string = "";
-
-		let vars: number[]|string[]|any[] = [];
-
-		for (let datum of data) {
-			if(typeof datum === 'string') {
-				//static teil der route
-				path += datum.replace(/\//g, '\\/');
-
-				continue;
-			}
-
-			if(datum !== null && typeof datum === 'object') {
-				//parameter teil
-				vars.push(datum.name); //name des objects von path-to-regexp
-				path += datum.prefix.replace(/\//g, '\\/') + '(' + datum.pattern + ')';
-			}
-		}
-
-		return [path,vars];
 	}
 }
 
