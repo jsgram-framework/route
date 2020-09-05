@@ -11,7 +11,7 @@
 A fast http router for node. Matches static routes with hashmap lookup and wildcard routes with assembled regex.
 
 It's created a map of all Routes. Static routes (without placeholders) are inside a hashmap where the path is the the key.
-Wildcard routes (with placeholders) are assembled in chunked regex of 10 routes.
+Routes with placeholders are assembled in chunked regex of 10 routes.
 
 It looks like this:
 
@@ -45,7 +45,7 @@ It looks like this:
 ````
 
 Instead of checking every route with regexp the dispatcher needs only to check the group of routes.
-The handler of this route will placed in another hashmap with the actual position of the route inside the regex group () as the key.
+The handler of this route will placed in another hashmap with the actual position of the route inside the regex group as the key.
 
 Based on [nikic/fast-route](https://github.com/nikic/FastRoute)
 
