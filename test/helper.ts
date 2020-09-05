@@ -6,7 +6,7 @@ export function createNewRouteCollector(options: RouterOptions = {}): RouteColle
 {
 	let generatorPath = "";
 	if(!options.generator) {
-		generatorPath = "../src/Generator/GroupPosBased";
+		generatorPath = "../src/Generator/RegexBased/GroupPosBased";
 	} else {
 		generatorPath = options.generator;
 	}
@@ -30,7 +30,7 @@ export function createNewDispatcher(collector: RouteCollectorInterface, options:
 	let dispatcherPath = "";
 
 	if(!options.dispatcher) {
-		dispatcherPath = "../src/Dispatcher/GroupPosBased";
+		dispatcherPath = "../src/Dispatcher/RegexBased/GroupPosBased";
 	} else {
 		dispatcherPath = options.dispatcher;
 	}
