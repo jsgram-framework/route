@@ -18,6 +18,8 @@ class Route
 
 	public vars: number[]|string[];
 
+	public regexParts: Map<string|number,RegExp> = new Map();
+
 	constructor(
 		public methods: HttpMethod[],
 		public path: string,
