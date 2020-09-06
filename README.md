@@ -8,48 +8,13 @@
 [![pipeline status](https://img.shields.io/npm/l/gram-route)](https://gitlab.com/grammm/jsgram/route/-/blob/master/LICENSE)
   
 
-A fast http router for node. Matches static routes with hashmap lookup and wildcard routes with assembled regex.
+A fast http router for node. Matches static routes with hashmap lookup and parameter routes with assembled regex or the Radix Tree.
 
-It's created a map of all Routes. Static routes (without placeholders) are inside a hashmap where the path is the the key.
-Routes with placeholders are assembled in chunked regex of 10 routes.
+The Regex based on  [nikic/fast-route](https://github.com/nikic/FastRoute). Check out [nikic blog post for more Explanation](http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html).
 
-It looks like this:
+The Radix Tree based on [find-my-way](https://github.com/delvedor/find-my-way).
 
-````regexp
-^(?:
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-)$
-
-^(?:
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-    |staticpart\/(regex)
-)$
-
-````
-
-Instead of checking every route with regexp the dispatcher needs only to check the group of routes.
-The handler of this route will placed in another hashmap with the actual position of the route inside the regex group as the key.
-
-Based on [nikic/fast-route](https://github.com/nikic/FastRoute)
-
-Check out [nikic blog post for more Explanation](http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html)
+Radix Tree is the standard router for matching dynamic routes.
 
 ````javascript
 
@@ -66,7 +31,6 @@ r.get("/",(req, res) => {
 
 //a route with a placeholder (wildcard)
 //:id can be anything until the next /
-//check out path-to-regex
 r.get("/user/:id",(req, res, id) => {
 	res.write("page from user: " +id);
 });
@@ -218,4 +182,5 @@ let r = router(options);	//now every instance of router() uses the new options
 
 ## Credits
 
-- Router Algorithm : [Copyright by Nikita Popov](https://github.com/nikic/FastRoute/blob/master/LICENSE).
+- Router Regex Algorithm : [Copyright by Nikita Popov](https://github.com/nikic/FastRoute/blob/master/LICENSE).
+- Router Radix tree Algorithm: [Copyright (c) 2017-2019 Tomas Della Vedova](https://github.com/delvedor/find-my-way/blob/master/LICENSE)
