@@ -14,7 +14,9 @@ The Regex based on  [nikic/fast-route](https://github.com/nikic/FastRoute). Chec
 
 The Radix Tree based on [find-my-way](https://github.com/delvedor/find-my-way).
 
-Radix Tree is the standard router for matching dynamic routes.
+Radix Tree is the standard router for matching dynamic routes because it is faster in most cases. 
+
+Saving the static routes in a hashmap and dynamic in the radix tree is the fastest for matching http requests.
 
 ````javascript
 
