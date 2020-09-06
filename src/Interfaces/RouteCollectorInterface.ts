@@ -10,7 +10,6 @@
 import Route from "../Route";
 import RouteGroup from "../RouteGroup";
 import {HttpMethod} from "../router";
-import {StaticRoutes} from "./GeneratorInterface";
 
 interface RouteCollectorInterface
 {
@@ -122,9 +121,12 @@ interface RouteCollectorInterface
 	 *
 	 * für den dispatcher
 	 *
+	 * Das Rturn wird durch den jeweiligen Fenerator bestimmt
+	 * deswegen any
+	 *
 	 * @returns {Array}
 	 */
-	getData(): [StaticRoutes, any];
+	getData(): any;
 
 	/**
 	 * Gebe eine bestimmte Route zurück

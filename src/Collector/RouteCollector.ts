@@ -9,7 +9,7 @@
 
 import RouteCollectorInterface from "../Interfaces/RouteCollectorInterface";
 import Route from "../Route";
-import GeneratorInterface, {StaticRoutes} from "../Interfaces/GeneratorInterface";
+import GeneratorInterface from "../Interfaces/GeneratorInterface";
 import RouteGroup from "../RouteGroup";
 import {HttpMethod} from "../router";
 
@@ -162,7 +162,7 @@ class RouteCollector implements RouteCollectorInterface
 	/**
 	 * @inheritDoc
 	 */
-	public getData(): [StaticRoutes, any]
+	public getData(): any
 	{
 		return this.generator.generate();
 	}
