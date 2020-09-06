@@ -109,7 +109,7 @@ export function createBigMap(r: RouteCollectorInterface)
 				return "matched HEAD static";
 			});
 
-			r.any("",() => {
+			r.any("/any",() => {
 				return "matched any static";
 			});
 		});
