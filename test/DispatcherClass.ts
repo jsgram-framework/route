@@ -2,7 +2,7 @@ import {assert} from "chai";
 import {createNewDispatcher, createNewRouteCollector, createRouteMap} from "./helper";
 import {RouterOptions} from "../src/router";
 
-function evaluateStaticMatches(expectedRouteId: number, expectedStatus: number, status: number, routeId: number, params = null)
+export function evaluateStaticMatches(expectedRouteId: number, expectedStatus: number, status: number, routeId: number, params = null)
 {
 	assert.equal(status,expectedStatus);
 	assert.equal(routeId,expectedRouteId);
@@ -13,7 +13,7 @@ function evaluateStaticMatches(expectedRouteId: number, expectedStatus: number, 
 	}
 }
 
-function evaluateDynamicMatches(params: Map<string,any>, paramNames: string[], paramValues: any[])
+export function evaluateDynamicMatches(params: Map<string,any>, paramNames: string[], paramValues: any[])
 {
 	let i = 0;
 	for (let paramName of paramNames) {
@@ -25,7 +25,7 @@ function evaluateDynamicMatches(params: Map<string,any>, paramNames: string[], p
 	}
 }
 
-function evaluateBigMap(method: string, path: string, expectedRouteId: number, routerOptions: RouterOptions, paramNames: string[] = [], paramValues: any[] = [])
+export function evaluateBigMap(method: string, path: string, expectedRouteId: number, routerOptions: RouterOptions, paramNames: string[] = [], paramValues: any[] = [])
 {
 	const d = createNewDispatcher(createRouteMap(routerOptions),routerOptions);
 
@@ -361,7 +361,7 @@ export function testDispatcher(options: RouterOptions)
 		evaluateDynamicMatches(params,["id"],[21]);
 
 		//try non number param
-		[status] = d.dispatch("GET","/test/21abc");
+		[status] = d.dispatch("GET","/test/abc");
 		assert.equal(status,404);
 	});
 
@@ -380,7 +380,7 @@ export function testDispatcher(options: RouterOptions)
 		evaluateDynamicMatches(params,["id"],[21]);
 
 		//try non number param
-		[status] = d.dispatch("GET","/test/unknownPart123/21abc");
+		[status] = d.dispatch("GET","/test/unknownPart123/abc");
 		assert.equal(status,404);
 	});
 
