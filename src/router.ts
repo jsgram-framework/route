@@ -57,13 +57,13 @@ function router(options: RouterOptions = {}): RouteCollectorInterface {
 	if(!routeCollector) {
 		let generatorPath = "";
 		if(!options.generator) {
-			generatorPath = "./Generator/RegexBased/GroupPosBased";
+			generatorPath = "./Generator/Tree/TreeGenerator";
 		} else {
 			generatorPath = options.generator;
 		}
 
 		if(!options.dispatcher) {
-			dispatcherPath = "./Dispatcher/RegexBased/GroupPosBased";
+			dispatcherPath = "./Dispatcher/Tree/TreeDispatcher";
 		} else {
 			dispatcherPath = options.dispatcher;
 		}
