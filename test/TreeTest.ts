@@ -10,7 +10,7 @@ const options:RouterOptions = {
 };
 
 describe("TreeDispatcher",() => {
-	//testDispatcher(options);
+	testDispatcher(options);
 
 	it('should throw assert error because of trying to insert the same route', function () {
 		const r = createNewRouteCollector(options);
