@@ -17,17 +17,13 @@ interface GeneratorInterface
 	/**
 	 * Erstelle die Route Map
 	 *
-	 * Die Routes werden getrennt ind static und dynamic und jeweils ihrer method zugeordnet
+	 * Wie diese aussieht deinifert der jeweilige Generator
 	 *
-	 * die static routes haben den path als key und die route id als value
+	 * Deswegen wird any zurück gegeben
 	 *
-	 * die dynamic routes werden in regex und handler (die route id) unterteilt
-	 * regex umfasst die zusammengesetzt regex der routes
-	 * wie diese aussieht wird vom jeweiligen generator bestimmt
-	 *
-	 * @returns {[StaticRoutes, any]}
+	 * @returns {any}
 	 */
-	generate(): [StaticRoutes, any];
+	generate(): any;
 
 	/**
 	 * füge eine Route der collection hinzu

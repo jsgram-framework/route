@@ -40,6 +40,15 @@ abstract class Generator implements GeneratorInterface
 
 	/**
 	 * @inheritDoc
+	 *
+	 * Die Routes werden getrennt ind static und dynamic und jeweils ihrer method zugeordnet
+	 *
+	 * die static routes haben den path als key und die route id als value
+	 *
+	 * die dynamic routes werden in regex und handler (die route id) unterteilt
+	 * regex umfasst die zusammengesetzt regex der routes
+	 * 
+	 * wie diese aussieht wird vom jeweiligen generator bestimmt
 	 */
 	public generate(): [StaticRoutes, any]
 	{
