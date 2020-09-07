@@ -17,6 +17,23 @@ class TreeDispatcherStandalone implements DispatcherInterface
 
 	public dispatch(method: HttpMethod, path: string): [number, number, Map<string, any>] | [number]
 	{
+		const response = this.doDispatch(method,path);
+
+		if(response[0] === 200) {
+			//route wurde gefunden
+			return response;
+		}
+
+		if(method == 'HEAD') {
+			//Prüfe bei HEAD auch GET routes
+			return this.dispatch('GET',path);
+		}
+
+		return [404];
+	}
+
+	public doDispatch(method: HttpMethod, path: string): [number, number, Map<string, any>] | [number]
+	{
 		if(!this.routes.has(method)) {
 			return [404];
 		}
