@@ -276,4 +276,248 @@ describe("TreeEdgeCasesTest",() => {
 		evaluateStaticMatches(2,200,status,routeId);
 		evaluateDynamicMatches(params,["*"],["12"]);
 	});
+
+	it('should match single-character prefix', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/b",() => {
+			return "test";
+		});
+
+		r.get("/b/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should match multi-character prefix', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bu",() => {
+			return "test";
+		});
+
+		r.get("/bu/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this static 1', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb",() => {
+			return "test";
+		});
+
+		r.get("/bb/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this static 2', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb/ff",() => {
+			return "test";
+		});
+
+		r.get("/bb/ff/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+
+		[status] = d.dispatch("GET","/ff/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this static 3', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb/ff",() => {
+			return "test";
+		});
+
+		r.get("/bb/ff/bulk",() => {
+			return "test";
+		});
+
+		r.get("/bb/ff/gg/bulk",() => {
+			return "test";
+		});
+
+		r.get("/bb/ff/bulk/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+
+		[status] = d.dispatch("GET","/ff/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this dynamic route 1', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/:foo/",() => {
+			return "test";
+		});
+
+		r.get("/:foo/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this dynamic route 2', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb",() => {
+			return "test";
+		});
+
+		r.get("/bb/:foo",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this dynamic route 3', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb/ff",() => {
+			return "test";
+		});
+
+		r.get("/bb/ff/:foo",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this dynamic route 4', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb/:foo",() => {
+			return "test";
+		});
+
+		r.get("/bb/:foo/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this dynamic route 5', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb/:foo/aa",() => {
+			return "test";
+		});
+
+		r.get("/bb/:foo/aa/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+
+		[status] = d.dispatch("GET","/bb/foo/bulk");
+
+		assert.equal(status,404);
+	});
+
+	it('should not match this dynamic route 6', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/static/:parametric/static/:parametric",() => {
+			return "test";
+		});
+
+		r.get("/static/:parametric/static/:parametric/bulk",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+
+		[status] = d.dispatch("GET","/static/foo/bulk");
+
+		assert.equal(status,404);
+
+		[status] = d.dispatch("GET","/static/foo/static/bulk");
+
+		assert.equal(status,200);
+	});
+
+	it('should not match this wildcard route', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb",() => {
+			return "test";
+		});
+
+		r.get("/bb/*",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
 });
