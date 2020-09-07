@@ -49,7 +49,10 @@ class TreeGenerator extends Generator
 				//parameter teil
 				path += datum.prefix + ":" + datum.name;
 
-				params.set(datum.name,new RegExp(datum.pattern));
+				if(datum.pattern !== '[^\\/#\\?]+?') {
+					//nur regex pattern speichern, wenn es vom standard abweicht
+					params.set(datum.name,new RegExp(datum.pattern));
+				}
 			}
 		}
 
