@@ -1,6 +1,8 @@
 import Node from "../../src/Generator/Tree/Node";
 import {assert} from "chai";
 
+//the following tests are from find-my-way check README.md#Credits for more information
+
 describe("NodeTest",() => {
 	it('should not use an invalid node type', function () {
 		const nodeClass = require("../../src/Generator/Tree/Node");

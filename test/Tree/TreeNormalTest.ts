@@ -12,6 +12,156 @@ const options:RouterOptions = {
 //the following tests are from find-my-way check README.md#Credits for more information
 
 describe("TreeNormalTest",() => {
+
+	it('should defining static route after parametric 1', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/static",() => {
+			return "test";
+		});
+
+		r.get("/:param",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/static");
+		evaluateStaticMatches(0,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/para");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["para"]);
+
+		[status, routeId, params] = d.dispatch("GET","/s");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["s"]);
+	});
+
+	it('should defining static route after parametric 2', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/:param",() => {
+			return "test";
+		});
+
+		r.get("/static",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/static");
+		evaluateStaticMatches(1,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/para");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["para"]);
+
+		[status, routeId, params] = d.dispatch("GET","/s");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["s"]);
+	});
+
+	it('should defining static route after parametric 3', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/:param",() => {
+			return "test";
+		});
+
+		r.get("/static",() => {
+			return "test";
+		});
+
+		r.get("/other",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/static");
+		evaluateStaticMatches(1,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/para");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["para"]);
+
+		[status, routeId, params] = d.dispatch("GET","/s");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["s"]);
+
+		[status, routeId, params] = d.dispatch("GET","/o");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["o"]);
+	});
+
+	it('should defining static route after parametric 4', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/static",() => {
+			return "test";
+		});
+
+		r.get("/:param",() => {
+			return "test";
+		});
+
+		r.get("/other",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/static");
+		evaluateStaticMatches(0,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/para");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["para"]);
+
+		[status, routeId, params] = d.dispatch("GET","/s");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["s"]);
+
+		[status, routeId, params] = d.dispatch("GET","/o");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["o"]);
+	});
+
+	it('should defining static route after parametric 5', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/static",() => {
+			return "test";
+		});
+
+		r.get("/other",() => {
+			return "test";
+		});
+
+		r.get("/:param",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/static");
+		evaluateStaticMatches(0,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/para");
+		evaluateStaticMatches(2,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["para"]);
+
+		[status, routeId, params] = d.dispatch("GET","/s");
+		evaluateStaticMatches(2,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["s"]);
+
+		[status, routeId, params] = d.dispatch("GET","/o");
+		evaluateStaticMatches(2,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["o"]);
+	});
+
 	it('should match parametric route with a dash', function () {
 		const r = createNewRouteCollector(options);
 
@@ -138,5 +288,44 @@ describe("TreeNormalTest",() => {
 
 		evaluateStaticMatches(0,200,status,routeId);
 		evaluateDynamicMatches(params,["param"],[""]);
+	});
+
+	it('should get the same tree 1', function () {
+		const r1 = createNewRouteCollector(options);
+		const r2 = createNewRouteCollector(options);
+
+		r1.get("/static","");
+		r1.get("/:param","");
+
+		r2.get("/static","");
+		r2.get("/:param","");
+
+		assert.deepEqual(r1.getData(),r2.getData());
+	});
+
+	it('should get the same tree 2', function () {
+		const r1 = createNewRouteCollector(options);
+		const r2 = createNewRouteCollector(options);
+		const r3 = createNewRouteCollector(options);
+
+		r1.get("/static","");
+		r1.get("/:param","");
+		r1.get("/other","");
+
+		r2.get("/static","");
+		r2.get("/:param","");
+		r2.get("/other","");
+
+		r3.get("/static","");
+		r3.get("/:param","");
+		r3.get("/other","");
+
+		const tree1 = r1.getData();
+		const tree2 = r2.getData();
+		const tree3 = r3.getData();
+
+		assert.deepEqual(tree1,tree2);
+		assert.deepEqual(tree1,tree3);
+		assert.deepEqual(tree2,tree3);
 	});
 });
