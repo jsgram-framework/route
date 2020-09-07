@@ -12,37 +12,76 @@ const options:RouterOptions = {
 
 describe("TreeDispatcherStandalone",() => {
 	testDispatcher(options);
+});
 
-	//the following tests are from find-my-way check README.md#Credits for more information
+describe("TreeDispatcherStandaloneRouteTest",() => {
+	routeTest(options);
+});
 
-	it('should match wildcard route', function () {
+//the following tests are from find-my-way check README.md#Credits for more information
+
+describe("TreeNormalTest",() => {
+	it('should match parametric route with a dash', function () {
 		const r = createNewRouteCollector(options);
 
-		r.options("/*",() => {
-			return "test";
-		});
-
-		r.options("/test/*",() => {
-			return "test";
-		});
-
-		r.get("/test/:id",() => {
+		r.get("/a/:param/b",() => {
 			return "test";
 		});
 
 		const d = createNewDispatcher(r,options);
 
-		let [status, routeId, params] = d.dispatch("OPTIONS","/test/21/22");
+		let [status, routeId, params] = d.dispatch("GET","/a/foo-bar/b");
 
-		evaluateStaticMatches(1,200,status,routeId);
-		evaluateDynamicMatches(params,["*"],["21/22"]);
-
-		[status, routeId, params] = d.dispatch("GET","/test/21");
-
-		evaluateStaticMatches(2,200,status,routeId);
-		evaluateDynamicMatches(params,["id"],[21]);
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["foo-bar"]);
 	});
 
+	it('should match parametric route with a multiple dash', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/a/:param",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/a/perfectly-fine-route");
+
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],["perfectly-fine-route"]);
+	});
+
+	it('should not match parametric route without the parameter', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/a/:param",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/a");
+
+		assert.equal(status,404);
+	});
+
+	it('should get an empty parameter', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/a/:param",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/a/");
+
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["param"],[""]);
+	});
+});
+
+describe("TreeEdgeCasesTest",() => {
 	it('should match nested static parametric route, url with parameter common prefix > 1', function () {
 		const r = createNewRouteCollector(options);
 
@@ -238,8 +277,230 @@ describe("TreeDispatcherStandalone",() => {
 
 		assert.equal(parent.parametricBrother, null);
 	});
+
+	it('should match param route inside nested static', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/api/foo/b2",() => {
+
+		});
+
+		r.get("/api/foo/bar/qux",() => {
+
+		});
+
+		r.get("/api/foo/:id/bar",() => {
+
+		});
+
+		r.get("/foo",() => {
+
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/api/foo/b-123/bar");
+		evaluateStaticMatches(2,200,status,routeId);
+		evaluateDynamicMatches(params,["id"],["b-123"]);
+	});
+
+	it('should match wildcard mixed with dynamic', function () {
+		const r = createNewRouteCollector(options);
+
+		r.options("/*",() => {
+
+		});
+
+		r.options("/obj/*",() => {
+
+		});
+
+		r.get("/obj/params/*",() => {
+
+		});
+
+		r.get("/obj/:id",() => {
+
+		});
+
+		r.get("/obj_params/:id",() => {
+
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("OPTIONS","/obj_params/params");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["obj_params/params"]);
+
+		[status, routeId, params] = d.dispatch("OPTIONS","/obj/params");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["params"]);
+
+		[status, routeId, params] = d.dispatch("OPTIONS","/obj/params/12");
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["params/12"]);
+
+		[status, routeId, params] = d.dispatch("GET","/obj/params/12");
+		evaluateStaticMatches(2,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["12"]);
+	});
 });
 
-describe("TreeDispatcherStandaloneRouteTest",() => {
-	routeTest(options);
+describe("TreeDispatcherStandaloneWildCardTest",() => {
+	it('should get an empty parameter from wildcard route', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/a/*",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/a/");
+
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],[""]);
+	});
+
+	it('should match wildcard route', function () {
+		const r = createNewRouteCollector(options);
+
+		r.options("/*",() => {
+			return "test";
+		});
+
+		r.options("/test/*",() => {
+			return "test";
+		});
+
+		r.get("/test/:id",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("OPTIONS","/test/21/22");
+
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["21/22"]);
+
+		[status, routeId, params] = d.dispatch("GET","/test/21");
+
+		evaluateStaticMatches(2,200,status,routeId);
+		evaluateDynamicMatches(params,["id"],[21]);
+	});
+
+	it('should match static and param route before wildcard route', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/*",() => {
+			return "test";
+		});
+
+		r.get("/test1/foo",() => {
+			return "test";
+		});
+
+		r.get("/test2/foo",() => {
+			return "test";
+		});
+
+		r.get("/test1/:foo",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/test1/foo");
+		evaluateStaticMatches(1,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/test2/foo");
+		evaluateStaticMatches(2,200,status,routeId);
+
+		[status, routeId, params] = d.dispatch("GET","/test1/foo1");
+
+		evaluateStaticMatches(3,200,status,routeId);
+		evaluateDynamicMatches(params,["foo"],["foo1"]);
+
+		[status, routeId, params] = d.dispatch("GET","/foo");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["foo"]);
+	});
+
+	it('should match nested wildcard cases', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("*",() => {
+			return "test";
+		});
+
+		r.get("/foo1/*",() => {
+			return "test";
+		});
+
+		r.get("/foo2/*",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/foo1/bar1/bar2");
+
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["bar1/bar2"]);
+	});
+
+	it('should match nested wildcard cases 2', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/foo2/*",() => {
+			return "test";
+		});
+
+		r.get("/foo1/*",() => {
+			return "test";
+		});
+
+		r.get("*",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId, params] = d.dispatch("GET","/foo1/bar1/bar2");
+
+		evaluateStaticMatches(1,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["bar1/bar2"]);
+	});
+
+	it('should match nested wildcard with param and static 2', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("*",() => {
+			return "test";
+		});
+
+		r.get("/foo1/*",() => {
+			return "test";
+		});
+
+		r.get("/foo2/*",() => {
+			return "test";
+		});
+
+		r.get("/foo3/:param",() => {
+			return "test";
+		});
+
+		r.get("/foo4/param",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status, routeId] = d.dispatch("GET","/foo4/param");
+
+		evaluateStaticMatches(4,200,status,routeId);
+	});
 });
