@@ -189,8 +189,6 @@ class Node
 				continue;
 			}
 
-			//maybe multiparametric route
-
 			wildcardNode = null;
 		}
 	}
@@ -221,14 +219,17 @@ class Node
 					}
 				}
 
-				type = REGEX;
-
-				//maybe multi param
-
+				//save the params
 				let parameter = path.slice(j, i);
 				params.push(parameter.slice(0, i));
 
+				//check if the regex pattern is different from the standard one
 				let regex: RegExp = routeRegex.get(parameter);
+
+				if(regex !== undefined && regex !== null) {
+					//if so then check regex as well
+					type = REGEX;
+				}
 
 				path = path.slice(0, j) + path.slice(i);
 				i = j;
@@ -285,7 +286,6 @@ class Node
 
 			// the longest common prefix is smaller than the current prefix
 			// let's split the node and add a new child
-
 			if (len < prefixLen) {
 				node = new Node(
 					prefix.slice(len),
@@ -307,9 +307,8 @@ class Node
 				// if the longest common prefix has the same length of the current path
 				// the handler should be added to the current node, to a child otherwise
 				if (len === pathLen) {
-					assert(currentNode.handle.id === null, `already declared for route '${route}'`);
-					currentNode.handle.id = handle;
-					currentNode.handle.paramNames = params;
+					assert(currentNode.handle === null, `handle already declared for route '${route}'`);
+					currentNode.createHandle(handle,params);
 
 					currentNode.type = type;
 				} else {
@@ -351,11 +350,10 @@ class Node
 				node = new Node(path, {},type, nodeHandle, regex);
 
 				currentNode.addChild(node);
-			} else if(handle) {
+			} else if(handle !== null) {
 				// the node already exist
-				assert(currentNode.handle.id === null, `handle already declared for route '${route}'`);
-				currentNode.handle.id = handle;
-				currentNode.handle.paramNames = params;
+				assert(currentNode.handle === null, `handle already declared for route '${route}'`);
+				currentNode.createHandle(handle,params);
 			}
 
 			return;
@@ -490,6 +488,14 @@ class Node
 		}
 
 		return null
+	}
+
+	public createHandle(assert: any, params: any[])
+	{
+		this.handle = {
+			id: assert,
+			paramNames: params
+		};
 	}
 }
 
