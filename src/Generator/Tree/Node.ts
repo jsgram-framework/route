@@ -373,7 +373,7 @@ class Node
 		return this;
 	}
 
-	protected addChild(n: Node): Node
+	public addChild(n: Node): Node
 	{
 		let label: string = '';
 
