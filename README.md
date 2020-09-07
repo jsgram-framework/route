@@ -18,6 +18,8 @@ Radix Tree is the standard router for matching dynamic routes because it is fast
 
 Saving the static routes in a hashmap and dynamic in the radix tree is the fastest for matching http requests.
 
+Only Radix Tree without the hashmap is also possible.
+
 ````javascript
 
 //es 6
