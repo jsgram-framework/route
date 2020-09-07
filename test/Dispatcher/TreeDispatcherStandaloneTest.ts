@@ -7,9 +7,11 @@ const options:RouterOptions = {
 	dispatcher:"../src/Dispatcher/Tree/TreeDispatcherStandalone"
 };
 
+/*
 describe("TreeDispatcherStandalone",() => {
 	testDispatcher(options);
 });
+*/
 
 describe("TreeDispatcherStandaloneRouteTest",() => {
 	routeTest(options);
