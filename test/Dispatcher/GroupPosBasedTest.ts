@@ -1,6 +1,6 @@
-import {testDispatcher} from "./DispatcherClass";
-import {routeTest} from "./RouteClass";
-import {RouterOptions} from "../src/router";
+import {testDispatcher} from "../DispatcherClass";
+import {routeTest} from "../RouteClass";
+import {RouterOptions} from "../../src/router";
 
 const options:RouterOptions = {
 	generator:"../src/Generator/RegexBased/GroupPosBased",

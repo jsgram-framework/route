@@ -1,7 +1,7 @@
-import {testDispatcher} from "./DispatcherClass";
-import {routeTest} from "./RouteClass";
-import {RouterOptions} from "../src/router";
-import {createNewDispatcher, createNewRouteCollector} from "./helper";
+import {testDispatcher} from "../DispatcherClass";
+import {routeTest} from "../RouteClass";
+import {RouterOptions} from "../../src/router";
+import {createNewDispatcher, createNewRouteCollector} from "../helper";
 import {assert} from "chai";
 
 const options:RouterOptions = {
