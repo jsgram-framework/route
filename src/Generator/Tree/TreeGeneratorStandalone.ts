@@ -26,7 +26,7 @@ class TreeGeneratorStandalone implements GeneratorInterface
 			}
 
 			for (let route of routes) {
-				this.trees.get(method).add(route);
+				this.trees.get(method).add(route,true);
 			}
 		}
 
