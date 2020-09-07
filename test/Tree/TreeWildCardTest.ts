@@ -193,21 +193,13 @@ describe("TreeWildCardTest",() => {
 	it('should not save the wildcard child if the prefixLen is higher than the pathLen 2 (mixed routes)', function () {
 		const r = createNewRouteCollector(options);
 
-		r.get("/static/*",() => {
+		r.get("/static/*",() => {});
 
-		});
+		r.get("/simple",() => {});
 
-		r.get("/simple",() => {
+		r.get("/simple/:bar",() => {});
 
-		});
-
-		r.get("/simple/:bar",() => {
-
-		});
-
-		r.get("/test",() => {
-
-		});
+		r.get("/test",() => {});
 
 		const d = createNewDispatcher(r,options);
 
@@ -227,25 +219,15 @@ describe("TreeWildCardTest",() => {
 	it('should not save the wildcard child if the prefixLen is higher than the pathLen 3 (with a root wildcard)', function () {
 		const r = createNewRouteCollector(options);
 
-		r.get("*",() => {
+		r.get("*",() => {});
 
-		});
+		r.get("/static/*",() => {});
 
-		r.get("/static/*",() => {
+		r.get("/simple",() => {});
 
-		});
+		r.get("/simple/:bar",() => {});
 
-		r.get("/simple",() => {
-
-		});
-
-		r.get("/simple/:bar",() => {
-
-		});
-
-		r.get("/test",() => {
-
-		});
+		r.get("/test",() => {});
 
 		const d = createNewDispatcher(r,options);
 
@@ -257,29 +239,21 @@ describe("TreeWildCardTest",() => {
 		evaluateStaticMatches(1,200,status,routeId);
 		evaluateDynamicMatches(params,["*"],["test"]);
 
-		[status] = d.dispatch("GET","/static");
-
-		assert.equal(status,404);
+		[status,routeId, params] = d.dispatch("GET","/static");
+		evaluateStaticMatches(0,200,status,routeId);
+		evaluateDynamicMatches(params,["*"],["/static"]);
 	});
 
 	it('should not save the wildcard child if the prefixLen is higher than the pathLen 4 (404)', function () {
 		const r = createNewRouteCollector(options);
 
-		r.get("/static/*",() => {
+		r.get("/static/*",() => {});
 
-		});
+		r.get("/simple",() => {});
 
-		r.get("/simple",() => {
+		r.get("/simple/:bar",() => {});
 
-		});
-
-		r.get("/simple/:bar",() => {
-
-		});
-
-		r.get("/test",() => {
-
-		});
+		r.get("/test",() => {});
 
 		const d = createNewDispatcher(r,options);
 
