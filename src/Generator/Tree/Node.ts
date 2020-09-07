@@ -136,6 +136,7 @@ class Node
 				continue;
 			}
 
+			/* istanbul ignore if */
 			if (len !== prefixLen) {
 				return this.getWildcardNode(wildcardNode,originalPath,pathLenWildcard);
 			}
@@ -189,11 +190,12 @@ class Node
 				continue;
 			}
 
+			/* istanbul ignore next */
 			wildcardNode = null;
 		}
 	}
 
-	public add(route: Route): void
+	public add(route: Route, standAlone: boolean = false): void
 	{
 		let path = route.path;
 		let handle = route.routeId;
@@ -215,6 +217,7 @@ class Node
 					if(path.charCodeAt(i) !== 45) {
 						++i;
 					} else {
+						/* istanbul ignore next */
 						break;
 					}
 				}
@@ -387,6 +390,7 @@ class Node
 				break;
 			case CATCH_ALL:
 				label = "*";
+				this.wildcardChild = n;
 				break;
 			default:
 				throw new Error(`Unknown node type: ${n.type}`)
@@ -468,16 +472,10 @@ class Node
 	{
 		if (node === null) return null;
 
-		let test = path.slice(-len);
-
-		if(test === null) {
-			return null;
-		}
-
 		let handle: any = node.handle;
 
 		let param = new Map([
-			['*',test]
+			['*',path.slice(-len)]
 		]);
 
 		if (handle !== null && handle !== undefined) {
@@ -487,6 +485,7 @@ class Node
 			];
 		}
 
+		/* istanbul ignore next */
 		return null
 	}
 
