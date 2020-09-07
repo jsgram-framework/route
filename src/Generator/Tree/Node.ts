@@ -6,7 +6,7 @@
 import Route from "../../Route";
 import assert = require("assert");
 
-export type NodeType = 0 | 1 | 2 | 3 | 4;
+export type NodeType = 0 | 1 | 2 | 3;
 
 const STATIC: NodeType = 0;
 
@@ -17,7 +17,7 @@ const CATCH_ALL: NodeType = 2;
 const REGEX: NodeType = 3;
 
 type NodeHandle = {
-	id: number;
+	asset: any;
 	paramNames: any[];
 };
 
@@ -41,7 +41,7 @@ class Node
 		this.numberOfChildren = Object.keys(this.children).length;
 	}
 
-	public find(path: string): [number,any]
+	public find(path: string): [any, Map<string,any>]
 	{
 		let originalPath: string = path;
 		let originalPathLength: number = path.length;
@@ -63,10 +63,10 @@ class Node
 
 			if (pathLen === 0 || path === prefix) {
 				// found the route
-				let handle = currentNode.handle.id;
+				let handle = currentNode.handle.asset;
 
 				if (handle !== null && handle !== undefined) {
-					const returnParams: Map<string|number,any> = new Map();
+					const returnParams: Map<string,any> = new Map();
 
 					if(currentNode.handle.paramNames.length > 0) {
 						let j = 0;
@@ -193,7 +193,7 @@ class Node
 		}
 	}
 
-	public add(route: Route)
+	public add(route: Route): void
 	{
 		let path = route.path;
 		let handle = route.routeId;
@@ -262,7 +262,7 @@ class Node
 		this.insert(path,STATIC,params,handle);
 	}
 
-	protected insert(path: string, type: NodeType, params = null, handle: number = null, regex: RegExp = null)
+	protected insert(path: string, type: NodeType, params = null, handle: any = null, regex: RegExp = null): void
 	{
 		const route = path;
 
@@ -313,7 +313,7 @@ class Node
 					currentNode.type = type;
 				} else {
 					let nodeHandle = {
-						id: handle,
+						asset: handle,
 						paramNames: params
 					};
 
@@ -343,7 +343,7 @@ class Node
 				}
 
 				let nodeHandle = {
-					id: handle,
+					asset: handle,
 					paramNames: params
 				};
 
@@ -434,16 +434,16 @@ class Node
 		return this;
 	}
 
-	protected findByLabel(path: string)
+	protected findByLabel(path: string): Node
 	{
 		return this.children[path[0]];
 	}
 
-	protected findChild(path: string)
+	protected findChild(path: string): Node | null
 	{
 		let child: Node = this.children[path[0]];
 
-		if(child !== undefined && (child.numberOfChildren > 0 || child.handle.id !== null)) {
+		if(child !== undefined && (child.numberOfChildren > 0 || child.handle !== null)) {
 			if (path.slice(0, child.prefix.length) === child.prefix) {
 				return child;
 			}
@@ -451,13 +451,13 @@ class Node
 
 		child = this.children[':'];
 
-		if(child !== undefined && (child.numberOfChildren > 0 || child.handle.id !== null)) {
+		if(child !== undefined && (child.numberOfChildren > 0 || child.handle !== null)) {
 			return child;
 		}
 
 		child = this.children['*'];
 
-		if(child !== undefined && (child.numberOfChildren > 0 || child.handle.id !== null)) {
+		if(child !== undefined && (child.numberOfChildren > 0 || child.handle !== null)) {
 			return child;
 		}
 
@@ -474,7 +474,7 @@ class Node
 			return null;
 		}
 
-		let handle: number = node.handle.id;
+		let handle: any = node.handle;
 
 		let param = new Map([
 			['*',test]
@@ -482,7 +482,7 @@ class Node
 
 		if (handle !== null && handle !== undefined) {
 			return [
-				handle,
+				handle.asset,
 				param
 			];
 		}
@@ -493,7 +493,7 @@ class Node
 	public createHandle(assert: any, params: any[])
 	{
 		this.handle = {
-			id: assert,
+			asset: assert,
 			paramNames: params
 		};
 	}
