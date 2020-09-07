@@ -1,3 +1,12 @@
+/**
+ * @package gram-route
+ *
+ * @link https://gitlab.com/grammm/jsgram/route
+ * @licence https://gitlab.com/grammm/jsgram/route/-/blob/master/LICENSE
+ *
+ * @author Jörn Heinemann <joernheinemann@gxm.de>
+ */
+
 import GeneratorInterface from "../../Interfaces/GeneratorInterface";
 import Route from "../../Route";
 import {HttpMethod} from "../../router";
@@ -26,8 +35,6 @@ class TreeGeneratorStandalone implements GeneratorInterface
 
 	public mapRoute(route: Route): void
 	{
-		//TODO Regex checken
-
 		for(let method of route.methods) {
 			if(!this.dynamicRoutes.has(method)) {
 				this.dynamicRoutes.set(method,[route]);
