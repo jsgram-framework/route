@@ -1,7 +1,7 @@
 # CHANGELOG
 
 # 1.1.0
-- since 2020/09/
+- since 2020/09/08
 - **Radix tree Dispatcher** from find-my-way added. All credits to find-my-way (see README.md#Credits)
 - split the dynamic and static routes in Generator and Dispatcher into separate classes
 
