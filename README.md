@@ -17,8 +17,11 @@ The Radix Tree based on [find-my-way](https://github.com/delvedor/find-my-way).
 Radix Tree is the standard router for matching dynamic routes because it is faster in most cases. 
 
 Saving the static routes in a hashmap and dynamic in the radix tree is the fastest for matching http requests.
+Also with this you have the power of path-to-regex in combination with the fast Radix Tree.
 
-Only Radix Tree without the hashmap is also possible.
+Only Radix Tree without the hashmap is also possible. 
+
+Use the assembled regex for 100% type safety e.g. if you want to match like this: `/(user|u)`. But this method don't support wildcard route (`/*`).
 
 ````javascript
 
