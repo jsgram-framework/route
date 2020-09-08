@@ -269,4 +269,22 @@ describe("TreeWildCardTest",() => {
 		[status] = d.dispatch("GET","/staticc/test");
 		assert.equal(status,404);
 	});
+
+	it('should not match this wildcard route', function () {
+		const r = createNewRouteCollector(options);
+
+		r.get("/bb",() => {
+			return "test";
+		});
+
+		r.get("/bb/*",() => {
+			return "test";
+		});
+
+		const d = createNewDispatcher(r,options);
+
+		let [status] = d.dispatch("GET","/bulk");
+
+		assert.equal(status,404);
+	});
 });

@@ -466,43 +466,4 @@ describe("TreeEdgeCasesTest",() => {
 
 		assert.equal(status,200);
 	});
-
-	it('should not match this wildcard route', function () {
-		const r = createNewRouteCollector(options);
-
-		r.get("/bb",() => {
-			return "test";
-		});
-
-		r.get("/bb/*",() => {
-			return "test";
-		});
-
-		const d = createNewDispatcher(r,options);
-
-		let [status] = d.dispatch("GET","/bulk");
-
-		assert.equal(status,404);
-	});
-
-	it('should throw an error because of the false regex', function () {
-		const r = createNewRouteCollector(options);
-
-		r.get("/foo/:id(a","");
-
-		assert.throws(() => {
-			createNewDispatcher(r,options);
-		});
-	});
-
-	it('should match route with regex', function () {
-		const r = createNewRouteCollector(options);
-
-		r.get("/a/:uuid(^[\\d-]{19})/:user(^\\w+)/account",() => {});
-
-		const d = createNewDispatcher(r,options);
-
-		let [status, routeId] = d.dispatch("GET","/a/1111-2222-3333-4445/bar/account");
-		evaluateStaticMatches(0,200,status,routeId);
-	});
 });
