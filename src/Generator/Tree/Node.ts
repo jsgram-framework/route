@@ -206,15 +206,20 @@ class Node
 		for (let i = 0, len = path.length; i < len; ++i) {
 			// search for parametric or wildcard routes
 			// parametric route
-			if (path.charCodeAt(i) === 58) {
+			if(path.charCodeAt(i) === 58) {
 				let type = PARAM;
 				j = i + 1;
 				let staticPart = path.slice(0, i);
 
 				this.insert(staticPart,STATIC);
 
+				let isRegex = false;
 				while (i < len && path.charCodeAt(i) !== 47) {
-					if(path.charCodeAt(i) !== 45) {
+					isRegex = isRegex || path[i] === '(';
+					if(isRegex) {
+						i = this.getClosingParenthensePosition(path,i) + 1;
+						break;
+					} else if(path.charCodeAt(i) !== 45) {
 						++i;
 					} else {
 						/* istanbul ignore next */
@@ -224,14 +229,32 @@ class Node
 
 				//save the params
 				let parameter = path.slice(j, i);
-				params.push(parameter.slice(0, i));
 
-				//check if the regex pattern is different from the standard one
-				let regex: RegExp = routeRegex.get(parameter);
+				let regex: RegExp = null;
 
-				if(regex !== undefined && regex !== null) {
-					//if so then check regex as well
-					type = REGEX;
+				if(standAlone) {
+					if(isRegex && (i === len || path.charCodeAt(i) === 47)) {
+						type = REGEX;
+					}
+
+					let regexParam = isRegex ? parameter.slice(parameter.indexOf('('), i) : null;
+
+					if(isRegex) {
+						regex = new RegExp(regexParam);
+					}
+
+					params.push(parameter.slice(0, isRegex ? parameter.indexOf('(') : i));
+				} else {
+					//check if the regex pattern is different from the standard one
+					//only if the route was parsed before
+					regex = routeRegex.get(parameter);
+
+					if(regex !== undefined && regex !== null) {
+						//if so then check regex as well
+						type = REGEX;
+					}
+
+					params.push(parameter.slice(0, i));
 				}
 
 				path = path.slice(0, j) + path.slice(i);
@@ -250,7 +273,7 @@ class Node
 				this.insert(staticPart,type,params,null);
 
 				--i;
-			} else if (path.charCodeAt(i) === 42) {
+			} else if(path.charCodeAt(i) === 42) {
 				//Wildcard route
 				this.insert(path.slice(0, i),STATIC);
 
@@ -487,6 +510,38 @@ class Node
 
 		/* istanbul ignore next */
 		return null
+	}
+
+	/**
+	 * `path.indexOf()` will always return the first position of the closing parenthese,
+	 * but it's inefficient for grouped or wrong regexp expressions.
+	 *
+	 * @param {string} path
+	 * @param {number} idx
+	 */
+	protected getClosingParenthensePosition(path: string, idx: number)
+	{
+		let parentheses = 1;
+
+		while (idx < path.length) {
+			++idx;
+
+			if(path[idx] === '\\') {
+				// ignore skipped chars
+				idx++;
+				continue;
+			}
+
+			if(path[idx] === ')') {
+				--parentheses;
+			} else if(path[idx] === '(') {
+				++parentheses;
+			}
+
+			if (!parentheses) return idx
+		}
+
+		throw new TypeError('Invalid regexp expression in "' + path + '"');
 	}
 
 	public createHandle(assert: any, params: any[])
