@@ -1,6 +1,7 @@
 import {testDispatcher} from "../DispatcherClass";
 import {routeTest} from "../RouteClass";
 import {RouterOptions} from "../../src/router";
+import {testDispatcherExt} from "../DispatcherClassExt";
 
 const options:RouterOptions = {
 	generator:"../src/Generator/RegexBased/GroupPosBased",
@@ -9,6 +10,8 @@ const options:RouterOptions = {
 
 describe("GroupPosBasedDispatcher",() => {
 	testDispatcher(options);
+
+	testDispatcherExt(options);
 });
 
 describe("GroupPosBasedDispatcherRouteTest",() => {

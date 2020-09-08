@@ -3,6 +3,7 @@ import {routeTest} from "../RouteClass";
 import {RouterOptions} from "../../src/router";
 import {createNewDispatcher, createNewRouteCollector} from "../helper";
 import {assert} from "chai";
+import {testDispatcherExt} from "../DispatcherClassExt";
 
 const options:RouterOptions = {
 	generator:"../src/Generator/Tree/TreeGenerator",
@@ -11,6 +12,8 @@ const options:RouterOptions = {
 
 describe("TreeDispatcher",() => {
 	testDispatcher(options);
+
+	testDispatcherExt(options);
 
 	it('should throw assert error because of trying to insert the same route', function () {
 		const r = createNewRouteCollector(options);
