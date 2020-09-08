@@ -365,46 +365,6 @@ export function testDispatcher(options: RouterOptions)
 		assert.equal(status,404);
 	});
 
-	it('should match with unknown parameter', function () {
-		const r = createNewRouteCollector(options);
-
-		r.get("/test/(.*)/:id(\\d+)",() => {
-			return "test";
-		});
-
-		const d = createNewDispatcher(r,options);
-
-		let [status, routeId, params] = d.dispatch("GET","/test/unknownPart123/21");
-
-		evaluateStaticMatches(0,200,status,routeId);
-		evaluateDynamicMatches(params,["id"],[21]);
-
-		//try non number param
-		[status] = d.dispatch("GET","/test/unknownPart123/abc");
-		assert.equal(status,404);
-	});
-
-	it('should match with specific parameter', function () {
-		const r = createNewRouteCollector(options);
-
-		r.get("/(user|u)/:id",() => {
-			return "test";
-		});
-
-		const d = createNewDispatcher(r,options);
-
-		//try with u
-		let [status, routeId, params] = d.dispatch("GET","/u/21");
-
-		evaluateStaticMatches(0,200,status,routeId);
-		evaluateDynamicMatches(params,["id"],[21]);
-
-		//try with user
-		[status, routeId, params] = d.dispatch("GET","/user/abc");
-		evaluateStaticMatches(0,200,status,routeId);
-		evaluateDynamicMatches(params,["id"],["abc"]);
-	});
-
 	//real world example
 	it('should match routes in groups', function () {
 		const path = "/test1/21";
