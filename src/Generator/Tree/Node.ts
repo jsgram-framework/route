@@ -440,6 +440,7 @@ class Node
 		}
 
 		const iterate = (n: Node) => {
+			/* istanbul ignore if */
 			if (!n) return;
 
 			if (n.type !== STATIC) {
