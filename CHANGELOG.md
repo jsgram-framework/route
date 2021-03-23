@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.2.1
+- since 2021/03/23
+- export all classes in router.ts
+
 # 1.2.0
 - since 2021/03/23
 - changed all for of to classic for or forEach (for maps)
