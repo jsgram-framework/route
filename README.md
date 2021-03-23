@@ -136,7 +136,7 @@ const server = http.createServer(function (req, res) {
 
 		let middleware = route.getMiddleware();	//retuns all middleware to this route (group and route middleware) as an array
 
-		callback(req,res, ... Array.from(result[2].values()));
+		callback(req,res, ...Object.values(result[2]));
 	} else {
 		//not found, 404
 	}

@@ -40,6 +40,22 @@ export type RouterOptions = {
 	collector?: string;
 };
 
+export * from "./Collector/RouteCollector";
+export * from "./Dispatcher/Dispatcher";
+export * from "./Dispatcher/RegexBased/GroupPosBased";
+export * from "./Dispatcher/RegexBased/RegexBasedDispatcher";
+export * from "./Dispatcher/Tree/TreeDispatcher";
+export * from "./Dispatcher/Tree/TreeDispatcherStandalone";
+export * from "./Generator/Tree/Node";
+export * from "./Generator/Tree/TreeGenerator";
+export * from "./Generator/Tree/TreeGeneratorStandalone";
+export * from "./Generator/Generator";
+export * from "./Generator/RegexBased/GroupPosBased";
+export * from "./Generator/RegexBased/RegexBasedGenerator";
+export * from "./Interfaces/DispatcherInterface";
+export * from "./Interfaces/GeneratorInterface";
+export * from "./Interfaces/RouteCollectorInterface";
+
 let routeCollector: RouteCollectorInterface;
 let routeDispatcher: DispatcherInterface;
 let dispatcherPath: string = "";
@@ -55,7 +71,7 @@ let dispatcherPath: string = "";
  */
 function router(options: RouterOptions = {}): RouteCollectorInterface {
 	if(!routeCollector) {
-		let generatorPath = "";
+		let generatorPath;
 		if(!options.generator) {
 			generatorPath = "./Generator/Tree/TreeGenerator";
 		} else {
@@ -68,7 +84,7 @@ function router(options: RouterOptions = {}): RouteCollectorInterface {
 			dispatcherPath = options.dispatcher;
 		}
 
-		let routeCollectorPath = "";
+		let routeCollectorPath;
 		if(!options.collector) {
 			routeCollectorPath = "./Collector/RouteCollector";
 		} else {
