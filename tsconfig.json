@@ -3,17 +3,14 @@
 		"module": "commonjs",
 		"target": "es2018",
 		"sourceMap": true,
-		"lib": ["es5", "es6"],
+		"lib": ["es5", "es6","es2018"],
 		"outDir": "./dist",
-		"rootDirs": [
-			"./src",
-			"./test"
-		],
+		"rootDir": "./src",
 		"moduleResolution": "node",
 		"declaration": true
 	},
 	"include": [
-		"src/", "test/"
+		"src/**/*"
 	],
 	"exclude": [
 		"node_modules"
