@@ -1,6 +1,6 @@
 {
   "name": "gram-route",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A fast http router for node.",
   "author": "Jörn Heinemann <joernheinemann@gmx.de>",
   "license": "MIT",
