@@ -8,16 +8,16 @@ export function evaluateStaticMatches(expectedRouteId: number, expectedStatus: n
 	assert.equal(routeId,expectedRouteId);
 
 	if(params !== null) {
-		assert.typeOf(params,'Map');
+		assert.typeOf(params,'object');
 		assert.isEmpty(params);
 	}
 }
 
-export function evaluateDynamicMatches(params: Map<string,any>, paramNames: string[], paramValues: any[])
+export function evaluateDynamicMatches(params: {}, paramNames: string[], paramValues: any[])
 {
 	let i = 0;
 	for (let paramName of paramNames) {
-		let param = params.get(paramName);
+		let param = params[paramName];
 
 		assert.equal(param,paramValues[i]);
 

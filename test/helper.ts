@@ -4,7 +4,7 @@ import DispatcherInterface from "../src/Interfaces/DispatcherInterface";
 
 export function createNewRouteCollector(options: RouterOptions): RouteCollectorInterface
 {
-	let routeCollectorPath = "";
+	let routeCollectorPath;
 	if(!options.collector) {
 		routeCollectorPath = "../src/Collector/RouteCollector";
 	} else {
