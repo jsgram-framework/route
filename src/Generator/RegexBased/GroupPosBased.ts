@@ -46,7 +46,9 @@ class GroupPosBased extends RegexBasedGenerator
 
 		let offset: number = 1;
 
-		for(let route of chunk) {
+		for (let i = 0; i < chunk.length; i++) {
+			let route = chunk[i];
+
 			routeCollector.push(route.path);
 
 			handleCollector.set(offset,[route.routeId,route.vars]);

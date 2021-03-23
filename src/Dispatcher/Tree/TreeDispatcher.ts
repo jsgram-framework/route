@@ -24,7 +24,7 @@ class TreeDispatcher extends Dispatcher
 		this.trees = routes[1];
 	}
 
-	dispatchDynamic(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
+	dispatchDynamic(method: HttpMethod, path: string): [number,number,{}] | [number]
 	{
 		if(!this.trees.has(method)) {
 			return [404];

@@ -22,9 +22,9 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * @param {string} method
 	 * @param {string} path
-	 * @returns {[number , Map] | [number]}
+	 * @returns {[number , {}] | [number]}
 	 */
-	abstract dispatchDynamic(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number];
+	abstract dispatchDynamic(method: HttpMethod, path: string): [number,number,{}] | [number];
 
 	/**
 	 * Erhalte die static routes und die dynamic
@@ -43,7 +43,7 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * Wenn Response nicht gewfunden wurde prüfe zusätzlich auf 405 und 404
 	 */
-	public dispatch(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
+	public dispatch(method: HttpMethod, path: string): [number,number,{}] | [number]
 	{
 		const response = this.doDispatch(method,path);
 
@@ -69,16 +69,16 @@ abstract class Dispatcher implements DispatcherInterface
 	 *
 	 * @param {HttpMethod} method
 	 * @param {string} path
-	 * @returns {[number , Map<string, {any}>] | [number]}
+	 * @returns {[number , {}] | [number]}
 	 */
-	private doDispatch(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
+	private doDispatch(method: HttpMethod, path: string): [number,number,{}] | [number]
 	{
 		//prüfe zuerst static routes
 		const check = this.staticRoutes.get(method);
 
 		if(check && check.has(path)) {
 			//route hat mit static routes gematcht
-			return [200,check.get(path),new Map()];
+			return [200,check.get(path), {}];
 		}
 
 		//dispatch dynamic

@@ -20,16 +20,16 @@ class GroupPosBased extends RegexBasedDispatcher
 	/**
 	 * @inheritDoc
 	 */
-	dispatchDynamic(method: HttpMethod, path: string): [number,number,Map<string,any>] | [number]
+	dispatchDynamic(method: HttpMethod, path: string): [number,number,{}] | [number]
 	{
 		if(false === this.dynamicRoutesRegex.has(method)) {
 			//es die method nicht bei den dynamic routes
 			return [404];
 		}
 
-		let i: number = 0;	//der zu suchende chunk
+		for (let i = 0; i < this.dynamicRoutesRegex.get(method).length; i++) {
+			let regex = this.dynamicRoutesRegex.get(method)[i];
 
-		for (let regex of this.dynamicRoutesRegex.get(method)) {
 			let matches = path.match(regex);
 
 			if(matches) {
@@ -42,16 +42,15 @@ class GroupPosBased extends RegexBasedDispatcher
 				let route = this.dynamicRoutesHandler.get(method)[i].get(j);
 
 				//setze die Vars in eine map mit ihren namen als index
-				let vars = new Map();
+				let vars = {};
 
-				route[1].forEach((item) => {
-					vars.set(item,matches[j++]);
-				});
+				for (let k = 0; k < route[1].length; k++) {
+					let key = route[1][k];
+					vars[key] = matches[j++];
+				}
 
 				return [200,route[0],vars];
 			}
-
-			++i;
 		}
 
 		return [404];

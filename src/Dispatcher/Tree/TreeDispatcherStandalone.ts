@@ -15,7 +15,7 @@ class TreeDispatcherStandalone implements DispatcherInterface
 {
 	constructor(private routes: Map<HttpMethod, Node>) {}
 
-	public dispatch(method: HttpMethod, path: string): [number, number, Map<string, any>] | [number]
+	public dispatch(method: HttpMethod, path: string): [number, number, {}] | [number]
 	{
 		const response = this.doDispatch(method,path);
 
@@ -32,7 +32,7 @@ class TreeDispatcherStandalone implements DispatcherInterface
 		return [404];
 	}
 
-	public doDispatch(method: HttpMethod, path: string): [number, number, Map<string, any>] | [number]
+	public doDispatch(method: HttpMethod, path: string): [number, number, {}] | [number]
 	{
 		if(!this.routes.has(method)) {
 			return [404];

@@ -68,7 +68,9 @@ abstract class RegexBasedGenerator extends Generator
 
 		let vars: number[]|string[]|any[] = [];
 
-		for (let datum of data) {
+		for (let i = 0; i < data.length; i++) {
+			let datum = data[i];
+
 			if(typeof datum === 'string') {
 				//static teil der route
 				path += datum.replace(/\//g, '\\/');

@@ -83,7 +83,9 @@ abstract class Generator implements GeneratorInterface
 
 		//trenne route in static und dynamic
 
-		for(let method of route.methods) {
+		for (let i = 0; i < route.methods.length; i++) {
+			let method = route.methods[i];
+
 			if(type == 0) {
 				/**
 				 * Static Route

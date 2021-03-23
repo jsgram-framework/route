@@ -16,9 +16,9 @@ interface DispatcherInterface
 	 *
 	 * @param {HttpMethod | string} method
 	 * @param {string} path
-	 * @returns {[number , Map<string, {any}>] | [number]}
+	 * @returns {[number , {}] | [number]}
 	 */
-	dispatch(method: HttpMethod | string, path:string): [number,number,Map<string,any>] | [number];
+	dispatch(method: HttpMethod | string, path:string): [number,number,{}] | [number];
 }
 
 export default DispatcherInterface;

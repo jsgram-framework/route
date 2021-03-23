@@ -41,7 +41,7 @@ class Node
 		this.numberOfChildren = Object.keys(this.children).length;
 	}
 
-	public find(path: string): [any, Map<string,any>]
+	public find(path: string): [any, {}]
 	{
 		let originalPath: string = path;
 		let originalPathLength: number = path.length;
@@ -66,13 +66,12 @@ class Node
 				let handle = currentNode.handle.asset;
 
 				if (handle !== null && handle !== undefined) {
-					const returnParams: Map<string,any> = new Map();
+					const returnParams = {};
 
 					if(currentNode.handle.paramNames.length > 0) {
-						let j = 0;
-						for (let paramName of currentNode.handle.paramNames) {
-							returnParams.set(paramName,params[j]);
-							++j;
+						for (let j = 0; j < currentNode.handle.paramNames.length; j++) {
+							let key = currentNode.handle.paramNames[j];
+							returnParams[key] = params[j];
 						}
 					}
 
@@ -492,15 +491,15 @@ class Node
 		return null;
 	}
 
-	protected getWildcardNode(node: Node, path: string, len: number): [number, Map<string,any>]
+	protected getWildcardNode(node: Node, path: string, len: number): [number, {}]
 	{
 		if (node === null) return null;
 
 		let handle: any = node.handle;
 
-		let param = new Map([
-			['*',path.slice(-len)]
-		]);
+		let param = {
+			'*':path.slice(-len)
+		}
 
 		if (handle !== null && handle !== undefined) {
 			return [

@@ -19,15 +19,15 @@ class TreeGenerator extends Generator
 
 	protected generateDynamic(): Map<HttpMethod, Node>
 	{
-		for(let [method,routes] of Array.from(this.dynamicRoutes.entries())) {
+		this.dynamicRoutes.forEach((routes, method) => {
 			if(!this.trees.has(method)) {
 				this.trees.set(method,new Node());
 			}
 
-			for (let route of routes) {
-				this.trees.get(method).add(route);
+			for (let i = 0; i < routes.length; i++) {
+				this.trees.get(method).add(routes[i]);
 			}
-		}
+		});
 
 		return this.trees;
 	}
@@ -37,7 +37,9 @@ class TreeGenerator extends Generator
 		let path: string = "";
 		let params: Map<string|number,RegExp> = new Map();
 
-		for (let datum of regexp) {
+		for (let i = 0; i < regexp.length; i++) {
+			let datum = regexp[i];
+
 			if(typeof datum === 'string') {
 				//static teil der route
 				path += datum;
