@@ -12,9 +12,7 @@ import {HttpMethod} from "./router";
 
 class Route
 {
-	private middleware: any[] = [];
-
-	private createRouteStack: boolean = false;
+	protected middleware: any[] = [];
 
 	public vars: number[]|string[];
 
@@ -42,12 +40,12 @@ class Route
 	 *
 	 * Hole alle GroupMw und packe diese vor die route mw
 	 */
-	public prepareRoute()
+	protected prepareRoute()
 	{
 		let groupMws: any[] = [];
 
-		for (let groupId of this.routeGroupIds) {
-			const groupMw = RouteGroup.getAllRouteMiddleware(groupId);
+		for (let i = 0; i < this.routeGroupIds.length; i++) {
+			const groupMw = RouteGroup.getAllRouteMiddleware(this.routeGroupIds[i]);
 
 			if(groupMw) {
 				groupMws.push(... groupMw);
@@ -56,25 +54,23 @@ class Route
 
 		//stelle die group mw voran, da diese zuerst ausgeführt werden müssen, packe den handler als letztes
 		this.middleware = [... groupMws, ... this.middleware];
+	}
 
-		this.createRouteStack = true;
+	/**
+	 * prepare the route before starting the server
+	 */
+	public build()
+	{
+		this.prepareRoute();
 	}
 
 	/**
 	 * Gebe alle Middleware der Route zurück, inkl dem Handler
 	 *
-	 * Der Route Stack wird nur einmal erstellt,
-	 * danach wird er in der Route gespeichert und nur noch abgerufen
-	 *
 	 * @returns {[]}
 	 */
 	public getMiddleware(): any[]
 	{
-		if(!this.createRouteStack) {
-			//wenn route noch erstellt werden muss
-			this.prepareRoute();
-		}
-
 		return this.middleware;
 	}
 }

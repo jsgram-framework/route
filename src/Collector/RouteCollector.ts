@@ -16,15 +16,10 @@ import {HttpMethod} from "../router";
 class RouteCollector implements RouteCollectorInterface
 {
 	protected base: string = "";
-
 	protected prefix: string = "";
-
 	protected routeId: number = 0;
-
 	protected routeGroupId: number = 0;
-
 	protected routeGroupIds: number[] = [0];
-
 	protected routes: Map<number,Route> = new Map();
 
 	constructor(private generator: GeneratorInterface) {}
@@ -164,6 +159,11 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public getData(): any
 	{
+		//prepare the routes (collect all middleware)
+		this.routes.forEach((route: Route) => {
+			route.build();
+		});
+
 		return this.generator.generate();
 	}
 

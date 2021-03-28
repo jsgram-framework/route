@@ -1,5 +1,12 @@
 # CHANGELOG
 
+# 1.2.3
+- since 2021/03/28
+- routes got a new function: build()
+- this function will prepare the route for execution
+- this function will be called before the server is ready for connections in the RouteCollector
+- middleware array in routes are now protected
+
 # 1.2.1
 - since 2021/03/23
 - export all classes in router.ts
