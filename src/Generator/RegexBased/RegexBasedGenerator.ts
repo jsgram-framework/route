@@ -94,14 +94,14 @@ abstract class RegexBasedGenerator extends Generator
 	protected generateDynamic(): Map<string, Map<HttpMethod, any[]>>
 	{
 		//iteriere über jede method
-		for(let [method,routes] of Array.from(this.dynamicRoutes.entries())) {
+		this.dynamicRoutes.forEach((routes, method) => {
 			let chunkSize = RegexBasedGenerator.generateChunkSize(routes.length,this.getChunkSize());
 
 			//array chunk
 			for (let i = 0, j = routes.length; i < j; i += chunkSize) {
 				this.chunkRoutes(routes.slice(i,i+chunkSize),method);
 			}
-		}
+		});
 
 		return new Map([
 			["regex",this.dynamicRouteList],
