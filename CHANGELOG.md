@@ -1,5 +1,11 @@
 # CHANGELOG
 
+# 1.2.4
+- since 2021/03/28
+- router singleton will not save the objects when NODE_ENV = test
+  - useful when a fresh state is needed after each test
+- changed exports in router.ts: export now all interfaces and RouteCollector, Route Classes
+
 # 1.2.3
 - since 2021/03/28
 - routes got a new function: build()

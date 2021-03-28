@@ -9,6 +9,10 @@
 
 import RouteCollectorInterface from "./Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "./Interfaces/DispatcherInterface";
+import GeneratorInterface from "./Interfaces/GeneratorInterface";
+import RouteCollector from "./Collector/RouteCollector";
+import Route from "./Route";
+import RouteGroup from "./RouteGroup";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD";
 
@@ -40,21 +44,7 @@ export type RouterOptions = {
 	collector?: string;
 };
 
-export * from "./Collector/RouteCollector";
-export * from "./Dispatcher/Dispatcher";
-export * from "./Dispatcher/RegexBased/GroupPosBased";
-export * from "./Dispatcher/RegexBased/RegexBasedDispatcher";
-export * from "./Dispatcher/Tree/TreeDispatcher";
-export * from "./Dispatcher/Tree/TreeDispatcherStandalone";
-export * from "./Generator/Tree/Node";
-export * from "./Generator/Tree/TreeGenerator";
-export * from "./Generator/Tree/TreeGeneratorStandalone";
-export * from "./Generator/Generator";
-export * from "./Generator/RegexBased/GroupPosBased";
-export * from "./Generator/RegexBased/RegexBasedGenerator";
-export * from "./Interfaces/DispatcherInterface";
-export * from "./Interfaces/GeneratorInterface";
-export * from "./Interfaces/RouteCollectorInterface";
+export {DispatcherInterface,GeneratorInterface,RouteCollectorInterface,RouteCollector,Route,RouteGroup};
 
 let routeCollector: RouteCollectorInterface;
 let routeDispatcher: DispatcherInterface;
@@ -69,8 +59,8 @@ let dispatcherPath: string = "";
  * @param {RouterOptions} options
  * @returns {RouteCollectorInterface}
  */
-function router(options: RouterOptions = {}): RouteCollectorInterface {
-	if(!routeCollector) {
+export function router(options: RouterOptions = {}): RouteCollectorInterface {
+	if(!routeCollector || process.env.NODE_ENV === "test") {
 		let generatorPath;
 		if(!options.generator) {
 			generatorPath = "./Generator/Tree/TreeGenerator";
@@ -108,8 +98,8 @@ function router(options: RouterOptions = {}): RouteCollectorInterface {
  *
  * @returns {DispatcherInterface}
  */
-function dispatcher(): DispatcherInterface {
-	if(!routeDispatcher) {
+export function dispatcher(): DispatcherInterface {
+	if(!routeDispatcher || process.env.NODE_ENV === "test") {
 		let dispatcherClass = require(dispatcherPath);
 
 		routeDispatcher = new dispatcherClass.default(routeCollector.getData());
@@ -117,5 +107,3 @@ function dispatcher(): DispatcherInterface {
 
 	return routeDispatcher;
 }
-
-export {router,dispatcher};
