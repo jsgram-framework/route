@@ -5,7 +5,7 @@ import DispatcherInterface from "../src/Interfaces/DispatcherInterface";
 export function createNewRouteCollector(options: RouterOptions): RouteCollectorInterface
 {
 	let routeCollectorPath;
-	if(!options.collector) {
+	if (!options.collector) {
 		routeCollectorPath = "../src/Collector/RouteCollector";
 	} else {
 		routeCollectorPath = options.collector;
@@ -20,126 +20,126 @@ export function createNewRouteCollector(options: RouterOptions): RouteCollectorI
 
 export function createNewDispatcher(collector: RouteCollectorInterface, options: RouterOptions): DispatcherInterface
 {
-	let dispatcherClass = require(options.dispatcher);
+	const dispatcherClass = require(options.dispatcher);
 
 	return new dispatcherClass.default(collector.getData());
 }
 
 export function createBigMap(r: RouteCollectorInterface)
 {
-	r.get("/",() => {
+	r.get("/", () => {
 		return "index";
 	});
 
-	r.group("/test1",() => {
+	r.group("/test1", () => {
 		//dynamic routes test
-		r.group("/:id",() => {
-			r.get("",() => {
+		r.group("/:id", () => {
+			r.get("", () => {
 				return "matched GET dynamic";
 			});
 
-			r.post("",() => {
+			r.post("", () => {
 				return "matched POST dynamic";
 			});
 
-			r.put("",() => {
+			r.put("", () => {
 				return "matched PUT dynamic";
 			});
 
-			r.delete("",() => {
+			r.delete("", () => {
 				return "matched DELETE dynamic";
 			});
 
-			r.options("",() => {
+			r.options("", () => {
 				return "matched OPTIONS dynamic";
 			});
 
-			r.patch("",() => {
+			r.patch("", () => {
 				return "matched PATCH dynamic";
 			});
 
-			r.head("",() => {
+			r.head("", () => {
 				return "matched HEAD dynamic";
 			});
 
-			r.any("/any",() => {
+			r.any("/any", () => {
 				return "matched any dynamic";
 			});
 
-			r.get("/routeChunk1/:id",() => {});
-			r.get("/routeChunk2/:id",() => {});
-			r.get("/routeChunk3/:id",() => {});
-			r.get("/routeChunk4/:id",() => {});
-			r.get("/routeChunk5/:id",() => {});
-			r.get("/routeChunk6/:id",() => {});
-			r.get("/routeChunk7/:id",() => {});
-			r.get("/routeChunk8/:id",() => {});
-			r.get("/routeChunk9/:id",() => {});
-			r.get("/routeChunk10/:id",() => {});
-			r.get("/routeChunk11/:id",() => {});
-			r.get("/routeChunk12/:id",() => {});
+			r.get("/routeChunk1/:id", () => {});
+			r.get("/routeChunk2/:id", () => {});
+			r.get("/routeChunk3/:id", () => {});
+			r.get("/routeChunk4/:id", () => {});
+			r.get("/routeChunk5/:id", () => {});
+			r.get("/routeChunk6/:id", () => {});
+			r.get("/routeChunk7/:id", () => {});
+			r.get("/routeChunk8/:id", () => {});
+			r.get("/routeChunk9/:id", () => {});
+			r.get("/routeChunk10/:id", () => {});
+			r.get("/routeChunk11/:id", () => {});
+			r.get("/routeChunk12/:id", () => {});
 		});
 
-		r.group("/static",() => {
-			r.get("",() => {
+		r.group("/static", () => {
+			r.get("", () => {
 				return "matched GET static";
 			});
 
-			r.post("",() => {
+			r.post("", () => {
 				return "matched POST static";
 			});
 
-			r.put("",() => {
+			r.put("", () => {
 				return "matched PUT static";
 			});
 
-			r.delete("",() => {
+			r.delete("", () => {
 				return "matched DELETE static";
 			});
 
-			r.options("",() => {
+			r.options("", () => {
 				return "matched OPTIONS static";
 			});
 
-			r.patch("",() => {
+			r.patch("", () => {
 				return "matched PATCH static";
 			});
 
-			r.head("",() => {
+			r.head("", () => {
 				return "matched HEAD static";
 			});
 
-			r.any("/any",() => {
+			r.any("/any", () => {
 				return "matched any static";
 			});
 		});
 
 		//nested groups
 
-		r.group("/nestedGroup1",() => {
-			r.get("/nestedRoute1",() => {
+		r.group("/nestedGroup1", () => {
+			r.get("/nestedRoute1", () => {
 				return "nestedG1R1";
 			});
 
-			r.get("/nestedRoute2/:id",() => {
+			r.get("/nestedRoute2/:id", () => {
 				return "nestedG1R2";
 			});
 
-			r.group("/nestedGroup2",() => {
-				r.get("/nestedRoute1",() => {
+			r.group("/nestedGroup2", () => {
+				r.get("/nestedRoute1", () => {
 					return "nestedG2R1";
 				});
 
-				r.get("/nestedRoute2/:id",() => {
+				r.get("/nestedRoute2/:id", () => {
 					return "nestedG2R2";
 				});
 
-				r.group("/nestedGroup3",() => {
-					r.get("/nestedRoute1",() => {
+				r.group("/nestedGroup3", () => {
+					r.get("/nestedRoute1", () => {
 						return "nestedG3R1";
 					});
 
-					r.get("/nestedRoute2/:id",() => {
+					r.get("/nestedRoute2/:id", () => {
 						return "nestedG3R2";
 					});
 				});
@@ -147,29 +147,29 @@ export function createBigMap(r: RouteCollectorInterface)
 		});
 	});
 
-	r.get("/dynamic/:id2/:id3/:id4",() => {
+	r.get("/dynamic/:id2/:id3/:id4", () => {
 		return "route with more than one dynamic param";
 	});
 }
 
 export function createMapWithMiddleware(r: RouteCollectorInterface)
 {
-	r.get("/routeMw1",() => {
+	r.get("/routeMw1", () => {
 
 	}).add(() => {
 		return "routeMw1";
 	});
 
-	r.group("/mwGroup1",() => {
-		r.get("/routeMw2",() => {
+	r.group("/mwGroup1", () => {
+		r.get("/routeMw2", () => {
 
 		}).add(() => {
 			return "routeMw2";
 		});
 
-		r.group("/mwGroup2",() => {
-			r.group("/mwGroup3",() => {
-				r.get("/routeMw4",() => {
+		r.group("/mwGroup2", () => {
+			r.group("/mwGroup3", () => {
+				r.get("/routeMw4", () => {
 
 				}).add(() => {
 					return "routeMw4";
@@ -179,10 +179,10 @@ export function createMapWithMiddleware(r: RouteCollectorInterface)
 			}).add(() => {
 				return "mwGroup3";
 			}).add(() => {
-				return "mwGroup3.1"
+				return "mwGroup3.1";
 			});
 
-			r.get("/routeMw3",() => {
+			r.get("/routeMw3", () => {
 
 			}).add(() => {
 				return "routeMw3";
@@ -195,7 +195,7 @@ export function createMapWithMiddleware(r: RouteCollectorInterface)
 	});
 }
 
-export function createRouteMap(options: RouterOptions, mapType: number = 1): RouteCollectorInterface
+export function createRouteMap(options: RouterOptions, mapType = 1): RouteCollectorInterface
 {
 	const r = createNewRouteCollector(options);
 
