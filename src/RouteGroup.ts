@@ -9,7 +9,7 @@
 
 class RouteGroup
 {
-	protected static middleware: Map<number,any[]> = new Map();
+	protected static middleware: Map<number, any[]> = new Map();
 
 	constructor(public groupId: number) {}
 
@@ -23,9 +23,9 @@ class RouteGroup
 	 */
 	public add(middleware: any)
 	{
-		if(!RouteGroup.middleware.has(this.groupId)) {
+		if (!RouteGroup.middleware.has(this.groupId)) {
 			//lege neues Array an
-			RouteGroup.middleware.set(this.groupId,[middleware]);
+			RouteGroup.middleware.set(this.groupId, [middleware]);
 		} else {
 			RouteGroup.middleware.get(this.groupId).push(middleware);
 		}

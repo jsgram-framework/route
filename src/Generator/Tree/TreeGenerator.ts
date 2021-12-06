@@ -20,8 +20,8 @@ class TreeGenerator extends Generator
 	protected generateDynamic(): Map<HttpMethod, Node>
 	{
 		this.dynamicRoutes.forEach((routes, method) => {
-			if(!this.trees.has(method)) {
-				this.trees.set(method,new Node());
+			if (!this.trees.has(method)) {
+				this.trees.set(method, new Node());
 			}
 
 			for (let i = 0; i < routes.length; i++) {
@@ -34,26 +34,26 @@ class TreeGenerator extends Generator
 
 	protected prepareDynamicRoute(route: Route, regexp: Token[])
 	{
-		let path: string = "";
-		let params: Map<string|number,RegExp> = new Map();
+		let path = "";
+		const params: Map<string | number, RegExp> = new Map();
 
 		for (let i = 0; i < regexp.length; i++) {
-			let datum = regexp[i];
+			const datum = regexp[i];
 
-			if(typeof datum === 'string') {
+			if (typeof datum === "string") {
 				//static teil der route
 				path += datum;
 
 				continue;
 			}
 
-			if(datum !== null && typeof datum === 'object') {
+			if (datum !== null && typeof datum === "object") {
 				//parameter teil
 				path += datum.prefix + ":" + datum.name;
 
-				if(datum.pattern !== '[^\\/#\\?]+?') {
+				if (datum.pattern !== "[^\\/#\\?]+?") {
 					//nur regex pattern speichern, wenn es vom standard abweicht
-					params.set(datum.name,new RegExp(datum.pattern));
+					params.set(datum.name, new RegExp(datum.pattern));
 				}
 			}
 		}

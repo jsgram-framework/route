@@ -14,9 +14,9 @@ class Route
 {
 	protected middleware: any[] = [];
 
-	public vars: number[]|string[];
+	public vars: number[] | string[];
 
-	public regexParts: Map<string|number,RegExp> = new Map();
+	public regexParts: Map<string | number, RegExp> = new Map();
 
 	constructor(
 		public methods: HttpMethod[],
@@ -42,12 +42,12 @@ class Route
 	 */
 	protected prepareRoute()
 	{
-		let groupMws: any[] = [];
+		const groupMws: any[] = [];
 
 		for (let i = 0; i < this.routeGroupIds.length; i++) {
 			const groupMw = RouteGroup.getAllRouteMiddleware(this.routeGroupIds[i]);
 
-			if(groupMw) {
+			if (groupMw) {
 				groupMws.push(... groupMw);
 			}
 		}
