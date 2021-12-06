@@ -170,13 +170,14 @@ The generator, dispatcher and collector can be changed.
 import {router, dispatcher} from 'gram-route';
 
 //options
+//use functions to return an instance of a class. 
 //Generator must implement GeneratorInterface and must be compatible with the dispatcher
 //Dispatcher must implement the DispatcherInterface
 //Collector must implement the RouteCollectorInterface
 const options = {
-	generator:"",	//the require path
-	dispatcher:"",
-	collector:""
+	getGenerator: () => GeneratorInterface,
+	getCollector: (generator) => RouteCollectorInterface,
+	getDisPatcher: (collector) => DispatcherInterface
 };
 
 let r = router(options);	//now every instance of router() uses the new options
