@@ -15,12 +15,17 @@ import {HttpMethod} from "../router";
 
 class RouteCollector implements RouteCollectorInterface
 {
-	protected base: string = "";
-	protected prefix: string = "";
-	protected routeId: number = 0;
-	protected routeGroupId: number = 0;
+	protected base = "";
+
+	protected prefix = "";
+
+	protected routeId = 0;
+
+	protected routeGroupId = 0;
+
 	protected routeGroupIds: number[] = [0];
-	protected routes: Map<number,Route> = new Map();
+
+	protected routes: Map<number, Route> = new Map();
 
 	constructor(private generator: GeneratorInterface) {}
 
@@ -32,9 +37,9 @@ class RouteCollector implements RouteCollectorInterface
 		//neuer path mit base und prefix (von der group)
 		path = this.base + this.prefix + path;
 
-		const route = this.createRoute(methods,path,handler);
+		const route = this.createRoute(methods, path, handler);
 
-		this.routes.set(this.routeId,route);
+		this.routes.set(this.routeId, route);
 
 		//gebe die route zum generieren dem generator
 		//kann in node genutzt werden, da hier die routes nicht gecacht werden müssen
@@ -87,7 +92,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public get(path: string, handler: any): Route
 	{
-		return this.add(["GET"],path,handler);
+		return this.add(["GET"], path, handler);
 	}
 
 	/**
@@ -95,7 +100,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public post(path: string, handler: any): Route
 	{
-		return this.add(["POST"],path,handler);
+		return this.add(["POST"], path, handler);
 	}
 
 	/**
@@ -103,7 +108,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public getpost(path: string, handler: any): Route
 	{
-		return this.add(["GET","POST"],path,handler);
+		return this.add(["GET", "POST"], path, handler);
 	}
 
 	/**
@@ -111,7 +116,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public put(path: string, handler: any): Route
 	{
-		return this.add(["PUT"],path,handler);
+		return this.add(["PUT"], path, handler);
 	}
 
 	/**
@@ -119,7 +124,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public patch(path: string, handler: any): Route
 	{
-		return this.add(["PATCH"],path,handler);
+		return this.add(["PATCH"], path, handler);
 	}
 
 	/**
@@ -127,7 +132,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public head(path: string, handler: any): Route
 	{
-		return this.add(["HEAD"],path,handler);
+		return this.add(["HEAD"], path, handler);
 	}
 
 	/**
@@ -135,7 +140,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public delete(path: string, handler: any): Route
 	{
-		return this.add(["DELETE"],path,handler);
+		return this.add(["DELETE"], path, handler);
 	}
 
 	/**
@@ -143,7 +148,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public options(path: string, handler: any): Route
 	{
-		return this.add(["OPTIONS"],path,handler);
+		return this.add(["OPTIONS"], path, handler);
 	}
 
 	/**
@@ -151,7 +156,7 @@ class RouteCollector implements RouteCollectorInterface
 	 */
 	public any(path: string, handler: any): Route
 	{
-		return this.add(["GET","POST","PUT","DELETE","OPTIONS","PATCH","HEAD"],path,handler);
+		return this.add(["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"], path, handler);
 	}
 
 	/**

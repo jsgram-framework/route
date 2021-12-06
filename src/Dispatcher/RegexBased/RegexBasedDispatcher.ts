@@ -21,10 +21,10 @@ abstract class RegexBasedDispatcher extends Dispatcher
 	{
 		super(routes[0]);
 
-		let dynamic: Map<string,any> = routes[1];
+		const dynamic: Map<string, any> = routes[1];
 
-		this.dynamicRoutesRegex = dynamic.get('regex');
-		this.dynamicRoutesHandler = dynamic.get('dynamichandler');
+		this.dynamicRoutesRegex = dynamic.get("regex");
+		this.dynamicRoutesHandler = dynamic.get("dynamichandler");
 	}
 
 }

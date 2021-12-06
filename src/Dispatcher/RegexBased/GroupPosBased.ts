@@ -20,36 +20,37 @@ class GroupPosBased extends RegexBasedDispatcher
 	/**
 	 * @inheritDoc
 	 */
-	dispatchDynamic(method: HttpMethod, path: string): [number,number,{}] | [number]
+	dispatchDynamic(method: HttpMethod, path: string): [number, number, {}] | [number]
 	{
-		if(false === this.dynamicRoutesRegex.has(method)) {
+		if (false === this.dynamicRoutesRegex.has(method)) {
 			//es die method nicht bei den dynamic routes
 			return [404];
 		}
 
 		for (let i = 0; i < this.dynamicRoutesRegex.get(method).length; i++) {
-			let regex = this.dynamicRoutesRegex.get(method)[i];
+			const regex = this.dynamicRoutesRegex.get(method)[i];
 
-			let matches = path.match(regex);
+			const matches = path.match(regex);
 
-			if(matches) {
+			if (matches) {
 				// find first non-empty match
 				// i = 0 = full match
 				let j = 1;
+				// eslint-disable-next-line no-empty
 				for (; matches[j] == undefined; ++j) {}
 
 				//hole route von der method, der i'te chunk, die j'te stelle
-				let route = this.dynamicRoutesHandler.get(method)[i].get(j);
+				const route = this.dynamicRoutesHandler.get(method)[i].get(j);
 
 				//setze die Vars in eine map mit ihren namen als index
-				let vars = {};
+				const vars = {};
 
 				for (let k = 0; k < route[1].length; k++) {
-					let key = route[1][k];
+					const key = route[1][k];
 					vars[key] = matches[j++];
 				}
 
-				return [200,route[0],vars];
+				return [200, route[0], vars];
 			}
 		}
 
@@ -58,4 +59,4 @@ class GroupPosBased extends RegexBasedDispatcher
 
 }
 
-export default GroupPosBased
+export default GroupPosBased;

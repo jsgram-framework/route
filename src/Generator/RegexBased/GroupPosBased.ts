@@ -41,31 +41,31 @@ class GroupPosBased extends RegexBasedGenerator
 	 */
 	protected chunkRoutes(chunk: Route[], method: HttpMethod)
 	{
-		let routeCollector: string[] = [];
-		let handleCollector: Map<number, any[]> = new Map();
+		const routeCollector: string[] = [];
+		const handleCollector: Map<number, any[]> = new Map();
 
-		let offset: number = 1;
+		let offset = 1;
 
 		for (let i = 0; i < chunk.length; i++) {
-			let route = chunk[i];
+			const route = chunk[i];
 
 			routeCollector.push(route.path);
 
-			handleCollector.set(offset,[route.routeId,route.vars]);
+			handleCollector.set(offset, [route.routeId, route.vars]);
 
 			offset += route.vars.length;
 		}
 
-		let regex = '^(?:' + routeCollector.join('|') + ')$';
+		const regex = "^(?:" + routeCollector.join("|") + ")$";
 
-		if(!this.dynamicRouteList.has(method)) {
-			this.dynamicRouteList.set(method,[regex]);
+		if (!this.dynamicRouteList.has(method)) {
+			this.dynamicRouteList.set(method, [regex]);
 		} else {
 			this.dynamicRouteList.get(method).push(regex);
 		}
 
-		if(!this.handlerList.has(method)) {
-			this.handlerList.set(method,[handleCollector]);
+		if (!this.handlerList.has(method)) {
+			this.handlerList.set(method, [handleCollector]);
 		} else {
 			this.handlerList.get(method).push(handleCollector);
 		}

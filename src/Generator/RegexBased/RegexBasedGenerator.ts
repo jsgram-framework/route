@@ -41,14 +41,14 @@ abstract class RegexBasedGenerator extends Generator
 	 * @param {Route[]} chunk
 	 * @param {HttpMethod} method
 	 */
-	protected abstract chunkRoutes(chunk: Route[],method: HttpMethod);
+	protected abstract chunkRoutes(chunk: Route[], method: HttpMethod);
 
 	/**
 	 * @inheritDoc
 	 */
-	protected prepareDynamicRoute(route: Route,regexp: Token[])
+	protected prepareDynamicRoute(route: Route, regexp: Token[])
 	{
-		let [path, vars] = this.createRoute(regexp);
+		const [path, vars] = this.createRoute(regexp);
 
 		route.path = path;	//gebe den geparsten path der route
 		route.vars = vars;	//die gefunden vars mit name
@@ -62,30 +62,30 @@ abstract class RegexBasedGenerator extends Generator
 	 * @param {Token[]} data
 	 * @returns {[string,number[]|string[]]}
 	 */
-	protected createRoute(data: Token[]): [string,number[]|string[]]
+	protected createRoute(data: Token[]): [string, number[] | string[]]
 	{
-		let path: string = "";
+		let path = "";
 
-		let vars: number[]|string[]|any[] = [];
+		const vars: number[] | string[] | any[] = [];
 
 		for (let i = 0; i < data.length; i++) {
-			let datum = data[i];
+			const datum = data[i];
 
-			if(typeof datum === 'string') {
+			if (typeof datum === "string") {
 				//static teil der route
-				path += datum.replace(/\//g, '\\/');
+				path += datum.replace(/\//g, "\\/");
 
 				continue;
 			}
 
-			if(datum !== null && typeof datum === 'object') {
+			if (datum !== null && typeof datum === "object") {
 				//parameter teil
 				vars.push(datum.name); //name des objects von path-to-regexp
-				path += datum.prefix.replace(/\//g, '\\/') + '(' + datum.pattern + ')';
+				path += datum.prefix.replace(/\//g, "\\/") + "(" + datum.pattern + ")";
 			}
 		}
 
-		return [path,vars];
+		return [path, vars];
 	}
 
 	/**
@@ -95,25 +95,25 @@ abstract class RegexBasedGenerator extends Generator
 	{
 		//iteriere über jede method
 		this.dynamicRoutes.forEach((routes, method) => {
-			let chunkSize = RegexBasedGenerator.generateChunkSize(routes.length,this.getChunkSize());
+			const chunkSize = RegexBasedGenerator.generateChunkSize(routes.length, this.getChunkSize());
 
 			//array chunk
 			for (let i = 0, j = routes.length; i < j; i += chunkSize) {
-				this.chunkRoutes(routes.slice(i,i+chunkSize),method);
+				this.chunkRoutes(routes.slice(i, i + chunkSize), method);
 			}
 		});
 
 		return new Map([
-			["regex",this.dynamicRouteList],
-			["dynamichandler",this.handlerList]
-		])
+			["regex", this.dynamicRouteList],
+			["dynamichandler", this.handlerList]
+		]);
 	}
 
 	protected static generateChunkSize(count:number, chunkSize:number): number
 	{
-		let approxChunks = Math.max(1,Math.round(count/chunkSize));	//wie viele Chunks lassen sich erstellen (muss min. einen geben)
+		const approxChunks = Math.max(1, Math.round(count / chunkSize));	//wie viele Chunks lassen sich erstellen (muss min. einen geben)
 
-		return Math.ceil(count/approxChunks);
+		return Math.ceil(count / approxChunks);
 	}
 }
 

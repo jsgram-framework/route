@@ -21,12 +21,12 @@ class TreeGeneratorStandalone implements GeneratorInterface
 	public generate(): Map<HttpMethod, Node>
 	{
 		this.dynamicRoutes.forEach((routes, method) => {
-			if(!this.trees.has(method)) {
-				this.trees.set(method,new Node());
+			if (!this.trees.has(method)) {
+				this.trees.set(method, new Node());
 			}
 
 			for (let i = 0; i < routes.length; i++) {
-				this.trees.get(method).add(routes[i],true);
+				this.trees.get(method).add(routes[i], true);
 			}
 		});
 
@@ -36,10 +36,10 @@ class TreeGeneratorStandalone implements GeneratorInterface
 	public mapRoute(route: Route): void
 	{
 		for (let i = 0; i < route.methods.length; i++) {
-			let method = route.methods[i];
+			const method = route.methods[i];
 
-			if(!this.dynamicRoutes.has(method)) {
-				this.dynamicRoutes.set(method,[route]);
+			if (!this.dynamicRoutes.has(method)) {
+				this.dynamicRoutes.set(method, [route]);
 			} else {
 				this.dynamicRoutes.get(method).push(route);
 			}

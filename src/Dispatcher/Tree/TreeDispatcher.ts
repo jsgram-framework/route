@@ -24,21 +24,21 @@ class TreeDispatcher extends Dispatcher
 		this.trees = routes[1];
 	}
 
-	dispatchDynamic(method: HttpMethod, path: string): [number,number,{}] | [number]
+	dispatchDynamic(method: HttpMethod, path: string): [number, number, {}] | [number]
 	{
-		if(!this.trees.has(method)) {
+		if (!this.trees.has(method)) {
 			return [404];
 		}
 
 		const node: Node = this.trees.get(method);
 
-		let result = node.find(path);
+		const result = node.find(path);
 
-		if(result === undefined || result === null) {
+		if (result === undefined || result === null) {
 			return [404];
 		}
 
-		return [200,result[0],result[1]];
+		return [200, result[0], result[1]];
 	}
 
 }
