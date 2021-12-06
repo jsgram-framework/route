@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 1.3.0
+- since 2021/12/06
+- use other route option to create generator, collector and dispatcher
+- these are breaking changes!
+
 # 1.2.4
 - since 2021/03/28
 - router singleton will not save the objects when NODE_ENV = test
