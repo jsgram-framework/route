@@ -1,18 +1,24 @@
 import {testDispatcher} from "../DispatcherClass";
 import {routeTest} from "../RouteClass";
 import {RouterOptions} from "../../src/router";
+import TreeGeneratorStandalone from "../../src/Generator/Tree/TreeGeneratorStandalone";
+import TreeDispatcherStandalone from "../../src/Dispatcher/Tree/TreeDispatcherStandalone";
 
 const options:RouterOptions = {
-	generator:"../src/Generator/Tree/TreeGeneratorStandalone",
-	dispatcher:"../src/Dispatcher/Tree/TreeDispatcherStandalone"
+	getGenerator: () => {
+		return new TreeGeneratorStandalone();
+	},
+	getDisPatcher: (collector) => {
+		return new TreeDispatcherStandalone(collector.getData());
+	}
 };
 
 
-describe("TreeDispatcherStandalone",() => {
+describe("TreeDispatcherStandalone", () => {
 	testDispatcher(options);
 });
 
 
-describe("TreeDispatcherStandaloneRouteTest",() => {
+describe("TreeDispatcherStandaloneRouteTest", () => {
 	routeTest(options);
 });

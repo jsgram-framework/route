@@ -1,10 +1,16 @@
 import {assert} from "chai";
 import {createNewRouteCollector} from "./helper";
 import {RouterOptions} from "../src/router";
+import TreeGenerator from "../src/Generator/Tree/TreeGenerator";
+import TreeDispatcher from "../src/Dispatcher/Tree/TreeDispatcher";
 
 const options:RouterOptions = {
-	generator: "../src/Generator/RegexBased/GroupPosBased",
-	dispatcher: "../src/Dispatcher/RegexBased/GroupPosBased"
+	getGenerator: () => {
+		return new TreeGenerator();
+	},
+	getDisPatcher: (collector) => {
+		return new TreeDispatcher(collector.getData());
+	}
 };
 
 describe("Route Collector", () => {
@@ -150,6 +156,6 @@ describe("Route Collector", () => {
 
 		const route = r.getRoute(0);
 
-		assert.equal(route.path, "\\/testDynamic\\/dynamic\\/([^\\/#\\?]+?)");
+		assert.equal(route.path, "/testDynamic/dynamic/:id");
 	});
 });
