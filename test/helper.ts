@@ -1,28 +1,49 @@
 import {RouterOptions} from "../src/router";
 import RouteCollectorInterface from "../src/Interfaces/RouteCollectorInterface";
 import DispatcherInterface from "../src/Interfaces/DispatcherInterface";
+import GeneratorInterface from "../src/Interfaces/GeneratorInterface";
+import TreeGenerator from "../src/Generator/Tree/TreeGenerator";
+import RouteCollector from "../src/Collector/RouteCollector";
+import TreeDispatcher from "../src/Dispatcher/Tree/TreeDispatcher";
+
+let getDispatcher: (collector: RouteCollectorInterface) => DispatcherInterface;
 
 export function createNewRouteCollector(options: RouterOptions): RouteCollectorInterface
 {
-	let routeCollectorPath;
-	if (!options.collector) {
-		routeCollectorPath = "../src/Collector/RouteCollector";
+	let generator: GeneratorInterface;
+
+	if (options?.getGenerator) {
+		generator = options.getGenerator();
 	} else {
-		routeCollectorPath = options.collector;
+		generator = new TreeGenerator();
 	}
 
-	const generator = require(options.generator);
+	let routeCollector;
 
-	const routeCollectorClass = require(routeCollectorPath);
+	if (options?.getCollector) {
+		routeCollector = options.getCollector(generator);
+	} else {
+		routeCollector = new RouteCollector(generator);
+	}
 
-	return new routeCollectorClass.default(new generator.default());
+	if (options?.getDisPatcher) {
+		getDispatcher = options.getDisPatcher;
+	} else {
+		getDispatcher = (collector) => {
+			return new TreeDispatcher(collector.getData());
+		};
+	}
+
+	return routeCollector;
 }
 
 export function createNewDispatcher(collector: RouteCollectorInterface, options: RouterOptions): DispatcherInterface
 {
-	const dispatcherClass = require(options.dispatcher);
+	if (options?.getDisPatcher) {
+		return options.getDisPatcher(collector);
+	}
 
-	return new dispatcherClass.default(collector.getData());
+	return getDispatcher(collector);
 }
 
 export function createBigMap(r: RouteCollectorInterface)
