@@ -13,42 +13,24 @@ import GeneratorInterface from "./Interfaces/GeneratorInterface";
 import RouteCollector from "./Collector/RouteCollector";
 import Route from "./Route";
 import RouteGroup from "./RouteGroup";
+import TreeGenerator from "./Generator/Tree/TreeGenerator";
+import TreeDispatcher from "./Dispatcher/Tree/TreeDispatcher";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "PATCH" | "HEAD";
 
 export type RouterOptions = {
-	/**
-	 * Path to the route generator.
-	 *
-	 * Must implement GeneratorInterface
-	 *
-	 * Must be compatible with the dispatcher
-	 *
-	 */
-	generator?: string;
+	getGenerator?: () => GeneratorInterface;
 
-	/**
-	 * Path to the route dispatcher
-	 *
-	 * Must implement the DispatcherInterface
-	 *
-	 * Must be compatible with the generator
-	 */
-	dispatcher?: string;
+	getCollector?: (generator: GeneratorInterface) => RouteCollectorInterface;
 
-	/**
-	 * Path to the route collector
-	 *
-	 * Must implement RouteCollectorInterface
-	 */
-	collector?: string;
+	getDisPatcher?: (collector: RouteCollectorInterface) => DispatcherInterface;
 };
 
 export {DispatcherInterface, GeneratorInterface, RouteCollectorInterface, RouteCollector, Route, RouteGroup};
 
 let routeCollector: RouteCollectorInterface;
 let routeDispatcher: DispatcherInterface;
-let dispatcherPath = "";
+let getDispatcher: (collector: RouteCollectorInterface) => DispatcherInterface;
 
 /**
  * Creates all parts of the router:
@@ -61,31 +43,27 @@ let dispatcherPath = "";
  */
 export function router(options: RouterOptions = {}): RouteCollectorInterface {
 	if (!routeCollector || process.env.NODE_ENV === "test") {
-		let generatorPath;
-		if (!options.generator) {
-			generatorPath = "./Generator/Tree/TreeGenerator";
+		let generator: GeneratorInterface;
+
+		if (options?.getGenerator) {
+			generator = options.getGenerator();
 		} else {
-			generatorPath = options.generator;
+			generator = new TreeGenerator();
 		}
 
-		if (!options.dispatcher) {
-			dispatcherPath = "./Dispatcher/Tree/TreeDispatcher";
+		if (options?.getCollector) {
+			routeCollector = options.getCollector(generator);
 		} else {
-			dispatcherPath = options.dispatcher;
+			routeCollector = new RouteCollector(generator);
 		}
 
-		let routeCollectorPath;
-		if (!options.collector) {
-			routeCollectorPath = "./Collector/RouteCollector";
+		if (options?.getDisPatcher) {
+			getDispatcher = options.getDisPatcher;
 		} else {
-			routeCollectorPath = options.collector;
+			getDispatcher = (collector) => {
+				return new TreeDispatcher(collector.getData());
+			};
 		}
-
-		const generator = require(generatorPath);
-
-		const routeCollectorClass = require(routeCollectorPath);
-
-		routeCollector = new routeCollectorClass.default(new generator.default());
 	}
 
 	return routeCollector;
@@ -100,9 +78,7 @@ export function router(options: RouterOptions = {}): RouteCollectorInterface {
  */
 export function dispatcher(): DispatcherInterface {
 	if (!routeDispatcher || process.env.NODE_ENV === "test") {
-		const dispatcherClass = require(dispatcherPath);
-
-		routeDispatcher = new dispatcherClass.default(routeCollector.getData());
+		routeDispatcher = getDispatcher(routeCollector);
 	}
 
 	return routeDispatcher;
